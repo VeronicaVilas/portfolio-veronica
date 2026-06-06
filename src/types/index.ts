@@ -1,7 +1,3 @@
-export interface HeroProps {
-    lang: 'pt' | 'en'
-}
-
 export interface Star {
   x: number
   y: number

@@ -88,7 +88,6 @@
   ::-webkit-scrollbar-thumb { background: var(--terra); border-radius: 2px; }
 }
 
-/* ─── KEYFRAMES ─── */
 @keyframes orbFloat {
   0%, 100% { transform: translate(0, 0); }
   50%       { transform: translate(22px, -28px); }
@@ -101,7 +100,6 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── HERO ─── */
 #hero {
   min-height: 100vh;
   display: flex;
@@ -201,7 +199,7 @@
   font-size: .93rem;
   color: var(--text2);
   line-height: 1.8;
-  max-width: 420px;
+  max-width: 520px;
 }
 .hero-bio strong { color: var(--sand); font-weight: 500; }
 
@@ -268,7 +266,6 @@
 }
 .btn-cv-hero:hover { background: var(--terra); color: var(--cream); transform: translateY(-2px); }
 
-/* ─── HERO RESPONSIVE ─── */
 @media (max-width: 1024px) {
   #hero { padding: 0 2rem 3.5rem; }
   .hero-bottom { grid-template-columns: 1fr; gap: 2rem; }
