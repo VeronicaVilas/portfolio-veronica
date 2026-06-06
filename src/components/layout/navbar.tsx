@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { Link } from 'react-scroll'
+import { useLang } from '../../hooks/useLang'
+import { useTheme } from '../../hooks/useTheme'
 
 const NAV_LINKS = [
   { label: 'Experiência',  labelEn: 'Experience',   to: 'experiencia' },
@@ -14,41 +16,27 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
 
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    if (typeof window === 'undefined') return 'dark'
-    return (localStorage.getItem('theme') as 'dark' | 'light') ?? 'dark'
-  })
-
-  const [lang, setLang] = useState<'pt' | 'en'>('pt')
+  const { theme, toggleTheme } = useTheme()
+  const { lang, setLang } = useLang()
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // scroll → blur
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', fn, { passive: true })
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  // aplica data-theme no <html>
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
-  }, [theme])
-
-  // bloqueia scroll do body quando menu mobile está aberto
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  // fecha menu ao redimensionar para desktop
   useEffect(() => {
     const fn = () => { if (window.innerWidth >= 768) setMenuOpen(false) }
     window.addEventListener('resize', fn)
     return () => window.removeEventListener('resize', fn)
   }, [])
 
-  const toggleTheme    = () => setTheme(p => p === 'dark' ? 'light' : 'dark')
   const handleMobileLink = () => setMenuOpen(false)
   const t = (pt: string, en: string) => lang === 'pt' ? pt : en
 

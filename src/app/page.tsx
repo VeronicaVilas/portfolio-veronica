@@ -1,12 +1,10 @@
 'use client'
 
-import { useState } from "react";
 import Hero from "../components/sections/hero";
-
+import { useLang } from "../hooks/useLang";
 
 export default function Home() {
-
-  const [lang, setLang] = useState<'pt' | 'en'>('pt')
+  const { lang } = useLang()
   return (
     <main>
       <Hero lang={lang} />
