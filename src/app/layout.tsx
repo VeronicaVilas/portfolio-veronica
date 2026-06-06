@@ -38,7 +38,7 @@ export default function RootLayout({ children }: Readonly<{
     >
       <body>
         <Navbar />
-        <main className="pt-[52px]">
+        <main>
           {children}
         </main>
       </body>

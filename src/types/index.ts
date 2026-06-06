@@ -1,3 +1,15 @@
+export interface HeroProps {
+    lang: 'pt' | 'en'
+}
+
+export interface Star {
+  x: number
+  y: number
+  r: number
+  opacity: number
+  speed: number
+}
+
 export interface Experience {
     id: number
     role: string
