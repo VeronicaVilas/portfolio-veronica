@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans, DM_Mono } from 'next/font/google'
 import "./globals.css";
 import Navbar from "../components/layout/navbar";
+import CustomCursor from "../components/ui/CustomCursor";
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: Readonly<{
       className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable} h-full antialiased`}
     >
       <body>
+        <CustomCursor />
         <Navbar />
         <main>
           {children}
