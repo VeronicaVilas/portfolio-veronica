@@ -13,12 +13,12 @@ function createStars(width: number, height: number): Star[] {
     }))
 }
 
-function drawStar(ctx: CanvasRenderingContext2D, s: Star) {
+function drawStar(ctx: CanvasRenderingContext2D, s: Star, rgb: string) {
     s.y -= s.speed
     if (s.y < 0) s.y = ctx.canvas.height
     ctx.beginPath()
     ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2)
-    ctx.fillStyle = `rgba(255,255,255,${s.opacity})`
+    ctx.fillStyle = `rgba(${rgb},${s.opacity})`
     ctx.fill()
 }
 
@@ -36,7 +36,6 @@ export default function Hero({ lang }: HeroProps) {
     const parallaxRef = useRef<HTMLDivElement>(null)
     const statsRef    = useRef<HTMLDivElement>(null)
 
-    /* ── Stars canvas ── */
     useEffect(() => {
         const canvas = canvasRef.current
         if (!canvas) return
@@ -51,8 +50,10 @@ export default function Hero({ lang }: HeroProps) {
         }
 
         const animate = () => {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light'
+            const rgb = isLight ? '124,92,58' : '255,255,255'
             ctx.clearRect(0, 0, canvas.width, canvas.height)
-            stars.forEach(s => drawStar(ctx, s))
+            stars.forEach(s => drawStar(ctx, s, rgb))
             raf = requestAnimationFrame(animate)
         }
 
@@ -66,7 +67,6 @@ export default function Hero({ lang }: HeroProps) {
         }
     }, [])
 
-    /* ── Parallax VV ── */
     useEffect(() => {
         const handleScroll = () => {
             if (!parallaxRef.current) return
@@ -78,7 +78,6 @@ export default function Hero({ lang }: HeroProps) {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    /* ── Counter animation ── */
     function animateCount(el: HTMLElement, target: number, duration: number) {
         const start = performance.now()
         const tick = (now: number) => {
@@ -109,14 +108,12 @@ export default function Hero({ lang }: HeroProps) {
 
     return (
         <section id="hero" className="relative min-h-screen overflow-hidden ">
-            {/* Stars */}
             <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full pointer-events-none"
                 aria-hidden="true"
             />
 
-            {/* Parallax initials */}
             <div ref={parallaxRef} aria-hidden="true" className="hero-parallax-num">
                 VV
             </div>
@@ -128,18 +125,16 @@ export default function Hero({ lang }: HeroProps) {
             </h1>
 
             <div className="hero-bottom" ref={statsRef}>
-                {/* Bio — left column */}
                 <p
                     className="hero-bio"
                     dangerouslySetInnerHTML={{
                         __html: t(
-                            'Desenvolvedora <strong>Full Stack</strong> com formação em <strong>Engenharia Química</strong>. Construo do zero ao deploy — ERPs, e-commerces, APIs, chatbots e plataformas escaláveis. Visão sistêmica, código limpo, foco em produto.',
-                            '<strong>Full Stack</strong> Developer with a background in <strong>Chemical Engineering</strong>. I build from scratch to deployment — ERPs, e-commerces, APIs, chatbots and scalable platforms. Systemic thinking, clean code, product focus.'
+                            'Desenvolvedora <strong>Full Stack</strong>, com formação em <strong>Engenharia Química</strong>, apaixonada por criar soluções que fazem sentido para as pessoas. Trabalho com desenvolvimento web, integrações, automações e produtos digitais, sempre buscando evoluir código, processos e experiências.',
+                            '<strong>Full Stack</strong> Developer with a background in <strong>Chemical Engineering</strong>, passionate about creating solutions that make sense to people. I work with web development, integrations, automation, and digital products, always seeking to evolve code, processes, and experiences.'
                         )
                     }}
                 />
 
-                {/* Stats + buttons — right column */}
                 <div className="hero-right">
                     <div className="hero-stats">
                         {STATS.map((s, i) => (
