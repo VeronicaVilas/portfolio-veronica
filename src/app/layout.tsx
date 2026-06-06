@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans, DM_Mono } from 'next/font/google'
 import "./globals.css";
+import Navbar from "../components/layout/navbar";
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -26,17 +27,21 @@ export const metadata: Metadata = {
   description: "Desenvolvedora Full Stack com formação em Engenharia Química...",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+export default function RootLayout({ children }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html
       lang="pt-BR"
+      data-theme="dark"
       className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body>
+        <Navbar />
+        <main className="pt-[52px]">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
