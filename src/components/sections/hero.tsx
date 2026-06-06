@@ -1,7 +1,8 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
-import type { HeroProps, Star } from '../../types'
+import type { Star } from '../../types'
+import { useLang } from '../../hooks/useLang'
 
 function createStars(width: number, height: number): Star[] {
     return Array.from({ length: 120 }, () => ({
@@ -28,8 +29,9 @@ const STATS = [
     { value: 20, suffix: '+', labelPt: 'tecnologias',  labelEn: 'technologies'},
 ]
 
-export default function Hero({ lang }: HeroProps) {
+export default function Hero() {
 
+    const { lang } = useLang()
     const t = (pt: string, en: string) => lang === 'pt' ? pt : en
 
     const canvasRef   = useRef<HTMLCanvasElement>(null)

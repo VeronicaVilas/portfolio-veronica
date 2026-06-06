@@ -13,10 +13,10 @@ function broadcast(l: Lang) {
 }
 
 export function useLang() {
+
     const [lang, setLocal] = useState<Lang>(_current)
 
     useEffect(() => {
-        setLocal(_current)
         _subs.add(setLocal)
         return () => { _subs.delete(setLocal) }
     }, [])
