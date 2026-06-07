@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react'
 import type { Star } from '../../types'
 import { useLang } from '../../hooks/useLang'
+import { STATS } from '../../data/stats'
 
 function createStars(width: number, height: number): Star[] {
     return Array.from({ length: 120 }, () => ({
@@ -22,12 +23,6 @@ function drawStar(ctx: CanvasRenderingContext2D, s: Star, rgb: string) {
     ctx.fillStyle = `rgba(${rgb},${s.opacity})`
     ctx.fill()
 }
-
-const STATS = [
-    { value: 2,  suffix: '+', labelPt: 'anos dev',     labelEn: 'years dev'   },
-    { value: 4,  suffix: '',  labelPt: 'empresas',     labelEn: 'companies'   },
-    { value: 20, suffix: '+', labelPt: 'tecnologias',  labelEn: 'technologies'},
-]
 
 export default function Hero() {
 
@@ -142,7 +137,7 @@ export default function Hero() {
                         {STATS.map((s, i) => (
                             <div key={i} className="hstat">
                                 <div className="hstat-n">
-                                    <span data-count={s.value}>0</span>{s.suffix}
+                                    <span data-count={s.count}>0</span>{s.suffix}
                                 </div>
                                 <div className="hstat-l">{t(s.labelPt, s.labelEn)}</div>
                             </div>
