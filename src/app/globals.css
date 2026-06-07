@@ -986,7 +986,23 @@ section { padding: 6rem 3rem; }
 /* =========================================================
    PROJETOS
    ========================================================= */
-#projetos { background: var(--bg2); }
+#projetos {
+  background: var(--bg2);
+  position: relative;
+}
+
+.proj-formacao-triangle {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(196, 168, 130, .07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196, 168, 130, .07) 1px, transparent 1px);
+  background-size: 36px 36px;
+  clip-path: polygon(100% 85%, 100% 100%, 10% 100%);
+  pointer-events: none;
+  z-index: 0;
+}
 
 .proj-filters {
   display: flex;

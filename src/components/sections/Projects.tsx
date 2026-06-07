@@ -172,6 +172,8 @@ export default function Projects() {
                     </div>
                 </div>
             )}
+
+            <div className="proj-formacao-triangle" aria-hidden="true" />
         </section>
     )
 }
