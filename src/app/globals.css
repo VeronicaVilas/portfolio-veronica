@@ -1480,7 +1480,7 @@ section { padding: 6rem 3rem; }
   margin-bottom: 2rem;
   color: var(--text);
 }
-.contact-big em { font-style: italic; color: var(--sand); display: block; }
+.contact-big em { font-style: italic; font-weight: 500; color: var(--sand); display: block; }
 
 .contact-layout {
   display: grid;

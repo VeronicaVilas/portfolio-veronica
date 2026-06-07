@@ -7,6 +7,8 @@ import CustomCursor from "../components/ui/CustomCursor";
 const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
+  weight: ['400', '500', '700', '900'],
+  style: ['normal', 'italic'],
   display: 'swap',
 })
 
