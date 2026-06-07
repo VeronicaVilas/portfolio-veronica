@@ -316,3 +316,43 @@
   .hstat-n { font-size: 1.8rem; }
   .btn-ghost, .btn-cv-hero { font-size: .65rem; padding: .56rem 1rem; }
 }
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-section {
+  overflow: hidden;
+  padding: .85rem 0;
+  border-top: .5px solid var(--border);
+  border-bottom: .5px solid var(--border);
+  background: var(--bg2);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 2rem;
+  animation: marqueeScroll 26s linear infinite;
+  width: max-content;
+}
+.marquee-track.rev { animation-direction: reverse; }
+
+.mtag {
+  font-size: .66rem;
+  color: var(--muted);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.mdot {
+  width: 3px;
+  height: 3px;
+  background: var(--terra);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
