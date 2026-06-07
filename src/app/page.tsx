@@ -4,6 +4,7 @@ import Hero from "../components/sections/hero";
 import TechTicker from "../components/sections/TechTicker";
 import About from "../components/sections/About";
 import Experience from "../components/sections/Experience";
+import Skills from "../components/sections/Skills";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <About />
       <Experience />
       <TechTicker reverse />
+      <Skills />
     </main>
   );
 }
