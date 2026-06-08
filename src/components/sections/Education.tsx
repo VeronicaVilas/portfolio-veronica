@@ -75,7 +75,7 @@ function CourseCard({
       <div
         ref={cardRef}
         className={`curso-card reveal rd${delay}`}
-        style={{ borderStyle: 'dashed', opacity: 0.45 }}
+        style={{ borderStyle: 'dashed', opacity: 0.70 }}
       >
         <div className="curso-year">{t('em progresso', 'in progress')}</div>
         <div className="curso-name" style={{ color: 'var(--text3)' }}>
