@@ -728,6 +728,7 @@ section { padding: 6rem 3rem; }
   background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(124, 92, 58, .09) 0%, transparent 60%);
   opacity: 0;
   transition: opacity .4s;
+  pointer-events: none;
 }
 .tl-card:hover::before { opacity: 1; }
 .tl-card:hover { border-color: var(--border2); transform: translateX(6px); }
@@ -780,7 +781,6 @@ section { padding: 6rem 3rem; }
 }
 
 .tl-desc { font-size: .82rem; color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
-.tl-techs { display: flex; flex-wrap: wrap; gap: 6px; }
 .tech-tag {
   font-family: var(--font-dm-mono), monospace;
   font-size: .6rem;
@@ -793,6 +793,35 @@ section { padding: 6rem 3rem; }
 
 .tl-item.tl-other .tl-dot { background: var(--bg2); border-color: var(--muted); }
 .tl-item.tl-other:hover .tl-dot { background: var(--sand); border-color: var(--sand); }
+
+.tl-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.tl-techs { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+
+.tl-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-dm-mono), monospace;
+  font-size: .62rem;
+  letter-spacing: .06em;
+  color: var(--terra);
+  cursor: none;
+  white-space: nowrap;
+  transition: color .3s, gap .3s;
+  flex-shrink: 0;
+}
+.tl-details-btn:hover { color: var(--sand); gap: 8px; }
+.tl-details-arrow { font-size: .7rem; transition: transform .3s; }
+.tl-details-btn:hover .tl-details-arrow { transform: translateX(3px); }
 
 /* =========================================================
    OTHER EXPERIENCES TOGGLE
@@ -1451,6 +1480,70 @@ section { padding: 6rem 3rem; }
 .mc-meta::before { content: '·'; color: var(--border2); }
 .mc-tags    { display: flex; flex-wrap: wrap; gap: 5px; }
 .mc-progress { opacity: .55; }
+
+/* =========================================================
+   EXP MODAL CONTENT
+   ========================================================= */
+.exp-modal-meta {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+.exp-modal-period {
+  font-family: var(--font-dm-mono), monospace;
+  font-size: .62rem;
+  color: var(--terra);
+  letter-spacing: .04em;
+}
+
+.exp-modal-section { margin-bottom: 1.6rem; }
+.exp-modal-section:last-child { margin-bottom: 0; }
+.exp-modal-section-label {
+  font-size: .58rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--terra);
+  margin-bottom: .6rem;
+}
+.exp-modal-summary {
+  font-size: .85rem;
+  color: var(--text2);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.exp-modal-details-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+}
+.exp-modal-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  padding: .65rem 0;
+  border-bottom: .5px solid var(--border);
+  font-size: .83rem;
+  color: var(--text2);
+  line-height: 1.7;
+  transition: color .3s, padding-left .25s;
+}
+.exp-modal-detail-item:last-child { border-bottom: none; }
+.exp-modal-detail-item:hover { color: var(--text); padding-left: .3rem; }
+.exp-modal-detail-dot {
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--terra);
+  margin-top: .55rem;
+  transition: background .3s;
+}
+.exp-modal-detail-item:hover .exp-modal-detail-dot { background: var(--sand); }
 
 @media (max-width: 1024px) {
   .cursos-grid { grid-template-columns: repeat(2, 1fr); }
