@@ -399,7 +399,6 @@
   margin-top: 2rem;
 }
 
-/* Orbital rings — outside strip, centered around the photo */
 .about-orbital-col {
   position: absolute;
   right: -2rem;
@@ -412,7 +411,6 @@
   pointer-events: none;
 }
 
-/* Photo only — outside strip, overflows below the straight edge */
 .about-photo-col {
   position: absolute;
   right: 0rem;
@@ -669,7 +667,6 @@ section { padding: 6rem 3rem; }
 .tl-item { position: relative; padding: 0 0 3.5rem 2.5rem; }
 .tl-item:last-child { padding-bottom: 0; }
 
-/* Dot */
 .tl-dot {
   position: absolute;
   left: -6px; top: 8px;
@@ -705,7 +702,6 @@ section { padding: 6rem 3rem; }
   animation: ripple 2s ease-out infinite;
 }
 
-/* Connector segment */
 .tl-item::before {
   content: '';
   position: absolute;
@@ -716,7 +712,6 @@ section { padding: 6rem 3rem; }
 }
 .tl-item:last-child::before { display: none; }
 
-/* Card */
 .tl-card {
   background: var(--card-bg2);
   border: .5px solid var(--border);
@@ -743,7 +738,6 @@ section { padding: 6rem 3rem; }
 }
 .tl-card-edu:hover { border-color: var(--border2); border-style: solid; }
 
-/* Card header */
 .tl-header {
   display: flex;
   justify-content: space-between;
@@ -785,7 +779,6 @@ section { padding: 6rem 3rem; }
   padding: 3px 10px;
 }
 
-/* Card body */
 .tl-desc { font-size: .82rem; color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
 .tl-techs { display: flex; flex-wrap: wrap; gap: 6px; }
 .tech-tag {
@@ -798,7 +791,6 @@ section { padding: 6rem 3rem; }
   padding: 3px 8px;
 }
 
-/* Other item dot */
 .tl-item.tl-other .tl-dot { background: var(--bg2); border-color: var(--muted); }
 .tl-item.tl-other:hover .tl-dot { background: var(--sand); border-color: var(--sand); }
 
@@ -1200,7 +1192,7 @@ section { padding: 6rem 3rem; }
 
 #formacao > * { position: relative; z-index: 1; }
 
-/* Degree cards grid */
+
 .edu-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1229,7 +1221,7 @@ section { padding: 6rem 3rem; }
   box-shadow: 4px 10px 24px rgba(0, 0, 0, .18);
   z-index: 5;
 }
-/* Golden tape */
+
 .edu-card::before {
   content: '';
   position: absolute;
@@ -1255,7 +1247,6 @@ section { padding: 6rem 3rem; }
   margin-top: 8px;
 }
 
-/* Complementary courses */
 .cursos-eyebrow {
   font-size: .62rem; letter-spacing: .15em;
   text-transform: uppercase;
@@ -1294,7 +1285,7 @@ section { padding: 6rem 3rem; }
   box-shadow: 3px 8px 18px rgba(0, 0, 0, .15);
   z-index: 5;
 }
-/* Tape on course cards */
+
 .curso-card::before {
   content: '';
   position: absolute;
@@ -1310,7 +1301,6 @@ section { padding: 6rem 3rem; }
 .curso-name { font-size: .82rem; font-weight: 500; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
 .curso-inst { font-size: .7rem; color: var(--muted); }
 
-/* "See more" card */
 .curso-card-seemore {
   border: .5px dashed var(--border2) !important;
   background: var(--pill-bg) !important;
@@ -1406,7 +1396,6 @@ section { padding: 6rem 3rem; }
 }
 .modal-note { font-family: var(--font-dm-mono), monospace; font-size: .58rem; color: var(--text3); }
 
-/* Modal timeline list */
 .modal-courses-list {
   display: flex; flex-direction: column;
   position: relative;
@@ -1525,13 +1514,26 @@ section { padding: 6rem 3rem; }
 
 .contact-right { display: flex; align-items: center; justify-content: center; }
 
+.contact-chibi-orbital { width: 360px; height: 360px; }
+.contact-chibi-orbital .orb-ring,
+.contact-chibi-orbital .orb-orbit { border-radius: 20px; }
+.contact-chibi-orbital .chibi-img { border-radius: 20px; }
+
 .chibi-placeholder {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 300px;
+  max-width: 450px;
+  border-radius: 20px;
+}
+
+.chibi-img {
+  width: 100%;
+  height: auto;
+  animation: chibiFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 20px 40px rgba(124, 92, 58, .3));
 }
 
 @keyframes chibiFloat {
@@ -1580,7 +1582,7 @@ section { padding: 6rem 3rem; }
 @media (max-width: 1024px) {
   .contact-layout { gap: 2rem; }
   .contact-right { order: -1; }
-  .chibi-placeholder { max-width: 220px; }
+  .chibi-placeholder { max-width: 320px; }
 }
 @media (max-width: 768px) {
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
