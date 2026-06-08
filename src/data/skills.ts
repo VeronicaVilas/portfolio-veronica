@@ -1,6 +1,7 @@
 export type SkillBar = {
     name: string
-    pct: number
+    pct: number    // largura da barra (proficiência)
+    since: number  // ano de início, para calcular "X anos" dinamicamente
 }
 
 export type SkillPill = {
@@ -9,12 +10,12 @@ export type SkillPill = {
 }
 
 export const SKILL_BARS: SkillBar[] = [
-    { name: 'PHP · Laravel',       pct: 90 },
-    { name: 'Angular · Vue.js',    pct: 88 },
-    { name: 'TypeScript · JS',     pct: 85 },
-    { name: 'PostgreSQL · MySQL',  pct: 82 },
-    { name: 'Node.js · REST APIs', pct: 78 },
-    { name: 'Docker · AWS',        pct: 65 },
+    { name: 'PHP · Laravel',       pct: 90, since: 2023 },
+    { name: 'Angular · Vue.js',    pct: 88, since: 2024 },
+    { name: 'TypeScript · JS',     pct: 85, since: 2023 },
+    { name: 'PostgreSQL · MySQL',  pct: 82, since: 2023 },
+    { name: 'Node.js · REST APIs', pct: 78, since: 2024 },
+    { name: 'Docker · AWS',        pct: 65, since: 2025 },
 ]
 
 export const SKILL_PILLS: SkillPill[] = [
