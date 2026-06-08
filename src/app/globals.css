@@ -946,8 +946,9 @@ section { padding: 6rem 3rem; }
   font-family: var(--font-dm-mono), monospace;
   font-size: .62rem;
   color: var(--terra);
-  width: 30px;
+  width: 48px;
   text-align: right;
+  white-space: nowrap;
 }
 
 .pill-cloud {

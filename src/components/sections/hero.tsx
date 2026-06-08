@@ -134,14 +134,17 @@ export default function Hero() {
 
                 <div className="hero-right">
                     <div className="hero-stats">
-                        {STATS.map((s, i) => (
-                            <div key={i} className="hstat">
-                                <div className="hstat-n">
-                                    <span data-count={s.count}>0</span>{s.suffix}
+                        {STATS.map((s, i) => {
+                            const n = typeof s.count === 'function' ? s.count() : s.count
+                            return (
+                                <div key={i} className="hstat">
+                                    <div className="hstat-n">
+                                        <span data-count={n}>0</span>{s.suffix}
+                                    </div>
+                                    <div className="hstat-l">{t(s.labelPt, s.labelEn)}</div>
                                 </div>
-                                <div className="hstat-l">{t(s.labelPt, s.labelEn)}</div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
 
                     <div className="hero-btns">

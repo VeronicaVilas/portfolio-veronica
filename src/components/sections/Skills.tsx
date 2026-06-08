@@ -17,7 +17,11 @@ function useReveal(ref: React.RefObject<HTMLElement | null>) {
     }, [])
 }
 
-function SkillRow({ skill, delay }: { skill: SkillBar; delay: 1 | 2 | 3 | 4 }) {
+function SkillRow({ skill, delay, t }: {
+    skill: SkillBar
+    delay: 1 | 2 | 3 | 4
+    t: (pt: string, en: string) => string
+}) {
     const rowRef  = useRef<HTMLDivElement>(null)
     const fillRef = useRef<HTMLDivElement>(null)
 
@@ -39,13 +43,19 @@ function SkillRow({ skill, delay }: { skill: SkillBar; delay: 1 | 2 | 3 | 4 }) {
         return () => io.disconnect()
     }, [skill.pct])
 
+    const years = new Date().getFullYear() - skill.since
+    const label = t(
+        years === 1 ? '1 ano' : `${years} anos`,
+        years === 1 ? '1 year' : `${years} years`
+    )
+
     return (
         <div ref={rowRef} className={`skill-row reveal rd${delay}`}>
             <span className="skill-name">{skill.name}</span>
             <div className="skill-track">
                 <div ref={fillRef} className="skill-fill" style={{ width: 0 }} />
             </div>
-            <span className="skill-pct">{skill.pct}%</span>
+            <span className="skill-pct">{label}</span>
         </div>
     )
 }
@@ -88,6 +98,7 @@ export default function Skills() {
                             key={skill.name}
                             skill={skill}
                             delay={((i % 4) + 1) as 1 | 2 | 3 | 4}
+                            t={t}
                         />
                     ))}
                 </div>
