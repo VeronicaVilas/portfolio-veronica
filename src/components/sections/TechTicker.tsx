@@ -7,8 +7,7 @@ const DEFAULT_ITEMS = [
 ]
 
 const ROLE_ITEMS = [
-    'Full Stack Development', 'Product Management', 'UX/UI Design',
-    'Engenharia de Software', 'APIs RESTful', 'Liderança Técnica',
+    'Full Stack Development', 'Product Management', 'UX/UI Design', 'APIs RESTful', 'Liderança Técnica',
     'Cofundadora', 'Código Limpo', 'Visão de Produto',
 ]
 

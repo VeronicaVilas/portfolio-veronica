@@ -1023,6 +1023,7 @@ section { padding: 6rem 3rem; }
 #projetos {
   background: var(--bg2);
   position: relative;
+  padding-bottom: 200px;
 }
 
 .proj-formacao-triangle {

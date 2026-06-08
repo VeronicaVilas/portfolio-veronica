@@ -5,16 +5,18 @@ import { useLang } from '../../hooks/useLang'
 import { PROJECTS, FILTER_TAGS, type Project } from '../../data/projects'
 
 function useReveal(ref: React.RefObject<HTMLElement | null>) {
+    const [revealed, setRevealed] = useState(false)
     useEffect(() => {
         const el = ref.current
         if (!el) return
         const io = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); io.disconnect() } },
+            ([entry]) => { if (entry.isIntersecting) { setRevealed(true); io.disconnect() } },
             { threshold: 0.1 }
         )
         io.observe(el)
         return () => io.disconnect()
     }, [])
+    return revealed
 }
 
 function ProjectCard({
@@ -29,7 +31,7 @@ function ProjectCard({
     delay?: 1 | 2 | 3
 }) {
     const cardRef = useRef<HTMLDivElement>(null)
-    useReveal(cardRef as React.RefObject<HTMLElement>)
+    const revealed = useReveal(cardRef as React.RefObject<HTMLElement>)
 
     const t = (pt: string, en: string) => lang === 'pt' ? pt : en
 
@@ -42,13 +44,14 @@ function ProjectCard({
     }
 
     const delayClass = delay ? ` rd${delay}` : ''
+    const revealedClass = revealed ? ' visible' : ''
     const filteredClass = filtered ? ' filtered-out' : ''
 
     if (project.wide) {
         return (
             <div
                 ref={cardRef}
-                className={`proj-card proj-card-wide reveal${filteredClass}`}
+                className={`proj-card proj-card-wide reveal${revealedClass}${filteredClass}`}
                 onMouseMove={handleMouseMove}
             >
                 <div>
@@ -84,7 +87,7 @@ function ProjectCard({
     return (
         <div
             ref={cardRef}
-            className={`proj-card reveal${delayClass}${filteredClass}`}
+            className={`proj-card reveal${delayClass}${revealedClass}${filteredClass}`}
             onMouseMove={handleMouseMove}
         >
             <div className="proj-icon-wrap">{project.icon}</div>
@@ -111,9 +114,9 @@ export default function Projects() {
     const titleRef   = useRef<HTMLHeadingElement>(null)
     const filtersRef = useRef<HTMLDivElement>(null)
 
-    useReveal(eyebrowRef as React.RefObject<HTMLElement>)
-    useReveal(titleRef   as React.RefObject<HTMLElement>)
-    useReveal(filtersRef as React.RefObject<HTMLElement>)
+    const eyebrowRevealed = useReveal(eyebrowRef as React.RefObject<HTMLElement>)
+    const titleRevealed   = useReveal(titleRef   as React.RefObject<HTMLElement>)
+    const filtersRevealed = useReveal(filtersRef as React.RefObject<HTMLElement>)
 
     const isFiltered = (project: Project) => {
         if (activeFilter === 'all') return false
@@ -124,17 +127,17 @@ export default function Projects() {
 
     return (
         <section id="projetos">
-            <div ref={eyebrowRef} className="sec-eyebrow reveal">
+            <div ref={eyebrowRef} className={`sec-eyebrow reveal${eyebrowRevealed ? ' visible' : ''}`}>
                 <span className="sec-num">03</span>
                 <div className="sec-dash" />
                 <span className="sec-label">{t('portfólio', 'portfolio')}</span>
             </div>
-            <h2 ref={titleRef} className="sec-title reveal">
+            <h2 ref={titleRef} className={`sec-title reveal${titleRevealed ? ' visible' : ''}`}>
                 <span>{t('Projetos em', 'Featured')}</span><br />
                 <em>{t('Destaque', 'Projects')}</em>
             </h2>
 
-            <div ref={filtersRef} className="proj-filters reveal">
+            <div ref={filtersRef} className={`proj-filters reveal${filtersRevealed ? ' visible' : ''}`}>
                 <button
                     className={`pf-btn${activeFilter === 'all' ? ' active' : ''}`}
                     onClick={() => setActiveFilter('all')}

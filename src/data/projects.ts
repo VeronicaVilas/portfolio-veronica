@@ -65,4 +65,4 @@ export const PROJECTS: Project[] = [
     },
 ]
 
-export const FILTER_TAGS = ['Vue.js', 'Angular', 'PHP', 'Node.js', 'TypeScript', 'Figma'] as const
+export const FILTER_TAGS = [...new Set(PROJECTS.flatMap(p => p.techs))]
