@@ -34,22 +34,18 @@ export default function About() {
         <div className="about-wrapper">
             <div ref={ref} className="about-strip reveal">
 
-                {/* ── Title: Playfair italic, full width ── */}
                 <h2 className="sec-title-about">
                     <em>{t('Sobre Mim', 'About Me')}</em><br />
                 </h2>
 
-                {/* ── First paragraph: full strip width ── */}
                 <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_1[lang] }} />
 
-                {/* ── Second paragraph: limited width, stays clear of photo area ── */}
                 <div className="about-content">
                     <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_2[lang] }} />
                 </div>
 
             </div>
 
-            {/* ── Orbital: outside strip, spinning around the photo ── */}
             <div className="about-orbital-col">
                 <div className="photo-orbital">
                     <div className="orb-ring orb-ring-1" />
@@ -67,11 +63,10 @@ export default function About() {
                 </div>
             </div>
 
-            {/* ── Photo: outside strip, overlaps the straight edge ── */}
             <div className="about-photo-col">
                 <div className="photo-frame">
                     <Image
-                        src="/fotodeperfil.png"
+                        src="/veronica.png"
                         alt="Verônica Vilas"
                         width={320}
                         height={320}
