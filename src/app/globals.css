@@ -102,6 +102,18 @@
   a, button { cursor: pointer !important; }
 }
 
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--terra), var(--sand));
+  z-index: 300;
+  width: 0;
+  transition: width .1s linear;
+  pointer-events: none;
+}
+
 @layer base {
   *,
   *::before,
