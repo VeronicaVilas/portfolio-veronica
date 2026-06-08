@@ -110,20 +110,20 @@ export default function Education() {
   useReveal(titleRef        as React.RefObject<HTMLElement>)
   useReveal(coursesLabelRef as React.RefObject<HTMLElement>)
 
-  // Count informal courses (excluding inProgress item)
   const informalCount = MODAL_COURSES.filter(c => !c.inProgress).length
 
   const openModal = useCallback(() => {
     setModalOpen(true)
     document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
   }, [])
 
   const closeModal = useCallback(() => {
     setModalOpen(false)
     document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
   }, [])
 
-  // Staggered entrance animation for modal items
   useEffect(() => {
     if (!modalOpen || !modalBodyRef.current) return
     const items = modalBodyRef.current.querySelectorAll<HTMLElement>('.mc-item')
@@ -140,22 +140,22 @@ export default function Education() {
     })
   }, [modalOpen])
 
-  // Close on Escape key
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeModal() }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [closeModal])
 
-  // Unlock scroll on unmount
-  useEffect(() => () => { document.body.style.overflow = '' }, [])
+  useEffect(() => () => {
+    document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
+  }, [])
 
   const delayFor = (i: number) => ([1, 2, 3, 1, 2, 3, 1][i] ?? 1) as 1 | 2 | 3
 
   return (
     <>
       <section id="formacao">
-        {/* Header */}
         <div ref={eyebrowRef} className="sec-eyebrow reveal">
           <span className="sec-num">04</span>
           <div className="sec-dash" />
@@ -169,7 +169,6 @@ export default function Education() {
           <em>{t('Cursos', 'Courses')}</em>
         </h2>
 
-        {/* Academic degree cards */}
         <div className="edu-grid">
           {EDU_DEGREES.map((deg, i) => (
             <EduCard
@@ -180,8 +179,6 @@ export default function Education() {
             />
           ))}
         </div>
-
-        {/* Complementary courses */}
         <div style={{ marginTop: '3.5rem', position: 'relative', zIndex: 1 }}>
           <div ref={coursesLabelRef} className="cursos-eyebrow reveal">
             {t('cursos complementares', 'complementary courses')}
@@ -203,7 +200,6 @@ export default function Education() {
 
       </section>
 
-      {/* ── MODAL ─────────────────────────────────────── */}
       <div
         className={`modal-overlay${modalOpen ? ' open' : ''}`}
         onClick={(e) => { if (e.target === e.currentTarget) closeModal() }}
