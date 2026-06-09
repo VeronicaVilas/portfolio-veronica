@@ -7,10 +7,9 @@ import { useTheme } from '../../hooks/useTheme'
 
 const NAV_LINKS = [
   { label: 'Experiência',  labelEn: 'Experience',   to: 'experiencia' },
-  { label: 'Skills',       labelEn: 'Skills',        to: 'skills'      },
+  { label: 'Habilidades',       labelEn: 'Skills',        to: 'skills'      },
   { label: 'Projetos',     labelEn: 'Projects',      to: 'projetos'    },
   { label: 'Formação',     labelEn: 'Education',     to: 'formacao'    },
-  { label: 'Depoimentos',  labelEn: 'Testimonials',  to: 'comentarios' },
 ]
 
 export default function Navbar() {
