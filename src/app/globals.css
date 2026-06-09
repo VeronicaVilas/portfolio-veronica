@@ -40,6 +40,7 @@
   --orb2:     rgba(212, 168, 83, .10);
   --strip-bg:   #7C5C3A;
   --strip-text: rgba(240, 232, 218, .78);
+  --grid-line:  rgba(196, 168, 130, .13);
 }
 [data-theme="light"] {
   --bg:       #F5EDE0;
@@ -66,6 +67,7 @@
   --orb2:     rgba(107, 76, 42, .07);
   --strip-bg:   #6B4C2A;
   --strip-text: rgba(240, 232, 218, .82);
+  --grid-line:  rgba(139, 96, 51, .12);
 }
 
 .cursor,
@@ -1031,8 +1033,8 @@ section { padding: 6rem 3rem; }
   inset: 0;
   background-color: var(--bg);
   background-image:
-    linear-gradient(rgba(196, 168, 130, .07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196, 168, 130, .07) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 36px 36px;
   clip-path: polygon(100% 85%, 100% 100%, 0% 100%);
   pointer-events: none;
@@ -1261,8 +1263,8 @@ section { padding: 6rem 3rem; }
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(196, 168, 130, .07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196, 168, 130, .07) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 36px 36px;
   pointer-events: none;
   z-index: 0;
@@ -1677,6 +1679,12 @@ section { padding: 6rem 3rem; }
 .contact-chibi-orbital .orb-orbit { border-radius: 20px; }
 .contact-chibi-orbital .chibi-img { border-radius: 20px; }
 
+[data-theme="light"] .contact-chibi-orbital .orb-ring   { border-color: rgba(107, 76, 42, .55); }
+[data-theme="light"] .contact-chibi-orbital .orb-ring-2 { border-color: rgba(107, 76, 42, .38); }
+[data-theme="light"] .contact-chibi-orbital .orb-ring-3 { border-color: rgba(107, 76, 42, .22); }
+[data-theme="light"] .contact-chibi-orbital .orb-orbit  { border-color: rgba(122, 79, 26, .55); }
+[data-theme="light"] .contact-chibi-orbital .orb-orbit-3 { border-color: rgba(107, 76, 42, .38); }
+
 .chibi-placeholder {
   position: relative;
   display: flex;
@@ -1729,8 +1737,8 @@ section { padding: 6rem 3rem; }
   inset: 0;
   background-color: var(--bg);
   background-image:
-    linear-gradient(rgba(196, 168, 130, .07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196, 168, 130, .07) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 36px 36px;
   clip-path: polygon(100% 15%, 0% 0%, 100% 0%);
   pointer-events: none;
