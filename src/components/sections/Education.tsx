@@ -236,11 +236,11 @@ export default function Education() {
                       className="mc-name"
                       style={course.inProgress ? { color: 'var(--text3)' } : undefined}
                     >
-                      {course.name}
+                      {t(course.namePt, course.nameEn)}
                     </div>
                     <div className="mc-meta">
-                      <span className="mc-inst">{course.inst}</span>
-                      <span className="mc-year">{course.year}</span>
+                      <span className="mc-inst">{course.inProgress ? t('próximo curso', 'next course') : course.inst}</span>
+                      <span className="mc-year">{course.inProgress ? t('em progresso', 'in progress') : course.year}</span>
                     </div>
                     {course.tags.length > 0 && (
                       <div className="mc-tags">
@@ -256,9 +256,6 @@ export default function Education() {
           </div>
 
           <div className="modal-footer">
-            <span className="modal-note">
-              {t('* substitua pela sua lista real de cursos', '* replace with your real course list')}
-            </span>
             <button className="btn-ghost" onClick={closeModal}>
               {t('Fechar', 'Close')}
             </button>
