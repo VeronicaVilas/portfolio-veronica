@@ -158,7 +158,7 @@
 }
 
 #hero {
-  min-height: 100vh;
+  min-height: clamp(600px, 100vh, 920px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -206,7 +206,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-family: var(--font-playfair), serif;
-  font-size: 22vw;
+  font-size: clamp(14rem, 22vw, 40rem);
   font-weight: 900;
   line-height: 1;
   color: var(--border);
@@ -330,11 +330,24 @@
   .hero-btns { justify-content: flex-start; }
 }
 @media (max-width: 768px) {
-  #hero { padding: 0 1.2rem 3rem; }
-  .hero-parallax-num { font-size: 40vw; right: -1rem; }
+  #hero { padding: 5.5rem 1.2rem 3rem; justify-content: flex-start; min-height: 0; }
+  .hero-parallax-num { display: none; }
   .hero-stats { gap: 1.5rem; }
   .hstat-n { font-size: 1.8rem; }
   .btn-ghost, .btn-cv-hero { font-size: .65rem; padding: .56rem 1rem; }
+}
+
+/* =========================================================
+   NAVBAR PADDING OVERRIDES (sobrescreve Tailwind px-12)
+   ========================================================= */
+@media (max-width: 1024px) {
+  nav { padding-left: 2rem; padding-right: 2rem; }
+}
+@media (max-width: 768px) {
+  nav { padding-left: 1.2rem; padding-right: 1.2rem; }
+}
+@media (max-width: 480px) {
+  nav { padding-left: 1rem; padding-right: 1rem; }
 }
 
 @keyframes marqueeScroll {
@@ -393,7 +406,6 @@
   background: var(--strip-bg);
   padding: 4rem 3rem 5rem;
   position: relative;
-  overflow: hidden;
 }
 
 .about-content {
@@ -401,33 +413,79 @@
   margin-top: 2rem;
 }
 
+/* Mobile-first: visual group in normal flow */
+.about-visual-group {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 1.5rem auto 2.5rem;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
 .about-orbital-col {
   position: absolute;
-  right: -2rem;
-  bottom: -180px;
-  width: 490px;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 1;
   pointer-events: none;
 }
 
 .about-photo-col {
   position: absolute;
-  right: 0rem;
-  bottom: -155px;
-  width: 420px;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 20;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* Desktop: visual group absolutely positioned over strip */
+@media (min-width: 769px) {
+  .about-visual-group {
+    position: absolute;
+    top: auto;
+    left: auto;
+    right: 0;
+    bottom: -155px;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .about-orbital-col {
+    top: auto;
+    left: auto;
+    right: -2rem;
+    bottom: -25px;
+    width: 490px;
+    z-index: 10;
+  }
+
+  .about-photo-col {
+    top: auto;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    width: 420px;
+    z-index: 20;
+  }
+
+  .photo-orbital { width: 480px; height: 480px; }
+  .photo-frame { width: 450px; height: 450px; }
 }
 
 .photo-orbital {
   position: relative;
-  width: 480px;
-  height: 480px;
+  width: 280px;
+  height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,8 +533,8 @@
 .orb-orbit-3 .orb-dot-2 { width: 4px; height: 4px; background: var(--terra); bottom: 10%; right: 10%; transform: translate(50%, 50%); }
 
 .photo-frame {
-  width: 450px;
-  height: 450px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   background: rgba(0, 0, 0, .2);
   border: 3px solid rgba(240, 232, 218, .15);
@@ -582,26 +640,15 @@
 }
 .lang-pill .lvl { font-size: .6rem; opacity: .6; margin-left: 2px; }
 
-@media (max-width: 1024px) {
-  .about-content { max-width: calc(100% - 400px); }
-  .about-photo-col { width: 360px; right: 2rem; }
-  .photo-orbital { width: 320px; height: 320px; }
-  .photo-frame { width: 280px; height: 280px; }
-}
 @media (max-width: 768px) {
-  .about-strip { padding: 3rem 2rem 5rem; }
+  .about-strip { padding: 3rem 2rem 5rem; overflow: hidden; }
   .about-content { max-width: 100%; }
-  .about-photo-col { position: static; width: auto; transform: translateY(90px); justify-content: center; }
-  .photo-orbital { width: 280px; height: 280px; margin: 0 auto; }
-  .photo-frame { width: 240px; height: 240px; }
-  #experiencia { padding-top: 11rem; }
 }
 @media (max-width: 480px) {
   .about-strip { padding: 2.5rem 1.4rem 4rem; }
-  .about-photo-col { transform: translateY(70px); }
+  .about-visual-group { width: 240px; height: 240px; }
   .photo-orbital { width: 240px; height: 240px; }
   .photo-frame { width: 200px; height: 200px; }
-  #experiencia { padding-top: 9rem; }
 }
 
 /* =========================================================
@@ -891,7 +938,7 @@ section { padding: 6rem 3rem; }
 }
 .other-exp-btn.open .other-exp-arrow { transform: rotate(180deg); color: var(--sand); }
 
-.other-exp-hint { font-size: .68rem; color: var(--text3); letter-spacing: .04em; padding-left: 32px; transition: color .3s; }
+.other-exp-hint { font-size: .68rem; color: var(--text3); letter-spacing: .04em; padding-left: 32px; padding-right: 16px; transition: color .3s; }
 .other-exp-btn:hover .other-exp-hint { color: var(--muted); }
 
 .other-exp-wrap {
@@ -904,7 +951,7 @@ section { padding: 6rem 3rem; }
   border-bottom-right-radius: 14px;
 }
 .other-exp-wrap.open { border-color: var(--sand); border-top: none; }
-.other-exp-inner { padding: 0 0 .5rem 0; }
+.other-exp-inner { padding: 0 1.5rem .5rem 0; }
 
 /* =========================================================
    SECTION RESPONSIVE
@@ -1247,6 +1294,10 @@ section { padding: 6rem 3rem; }
 @media (max-width: 768px) {
   .proj-grid { grid-template-columns: 1fr; }
   .proj-card-wide { grid-column: span 1; grid-template-columns: 1fr; }
+  .proj-card { padding: 1.4rem; }
+}
+@media (max-width: 480px) {
+  .proj-card { padding: 1rem; }
 }
 
 /* =========================================================
@@ -1745,13 +1796,20 @@ section { padding: 6rem 3rem; }
   z-index: 0;
 }
 
+#contato .sec-eyebrow { position: relative; z-index: 10; }
+
 @media (max-width: 1024px) {
   .contact-layout { gap: 2rem; }
   .contact-right { order: -1; }
   .chibi-placeholder { max-width: 320px; }
+  .contact-chibi-orbital { width: min(300px, 80vw); height: min(300px, 80vw); }
 }
 @media (max-width: 768px) {
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .contact-chibi-orbital { width: min(260px, 78vw); height: min(260px, 78vw); }
+}
+@media (max-width: 480px) {
+  .contact-chibi-orbital { width: min(220px, 72vw); height: min(220px, 72vw); }
 }
 
 /* =========================================================
@@ -1780,4 +1838,53 @@ footer {
 
 @media (max-width: 768px) {
   footer { padding: 1rem 1.2rem; flex-direction: column; gap: .5rem; text-align: center; }
+}
+
+/* =========================================================
+   LARGE / ULTRA-WIDE / 4K  (≥ 1400px)
+   Centraliza o conteúdo em ~1360px usando padding fluido:
+   padding-H = max(base, (viewport - 1360px) / 2)
+   Backgrounds de seção permanecem full-width.
+   ========================================================= */
+@media (min-width: 1400px) {
+  section,
+  #hero,
+  .about-strip {
+    padding-left:  max(3rem, calc((100vw - 1360px) / 2));
+    padding-right: max(3rem, calc((100vw - 1360px) / 2));
+  }
+
+  nav,
+  footer {
+    padding-left:  max(3rem, calc((100vw - 1360px) / 2));
+    padding-right: max(3rem, calc((100vw - 1360px) / 2));
+  }
+
+  /* Foto e orbital se alinham com a borda direita da área de conteúdo */
+  .about-visual-group {
+    right: max(0rem, calc((100vw - 1360px) / 2));
+  }
+}
+
+/* ≥ 1920px — Full HD large: orbs crescem proporcionalmente */
+@media (min-width: 1920px) {
+  .hero-orb-1 { width: 700px; height: 700px; }
+  .hero-orb-2 { width: 420px; height: 420px; }
+}
+
+/* ≥ 2560px — 2K / QHD */
+@media (min-width: 2560px) {
+  section                { padding-top: 8rem;  padding-bottom: 8rem;  }
+  .about-strip           { padding-top: 5rem;  padding-bottom: 7rem;  }
+  footer                 { padding-top: 2.5rem; padding-bottom: 3rem; }
+  .hero-orb-1            { width: 900px; height: 900px; }
+  .hero-orb-2            { width: 560px; height: 560px; }
+}
+
+/* ≥ 3840px — 4K / UHD */
+@media (min-width: 3840px) {
+  section                { padding-top: 10rem; padding-bottom: 10rem; }
+  .hero-orb-1            { width: 1100px; height: 1100px; }
+  .hero-orb-2            { width: 700px;  height: 700px;  }
+  .footer-curve-wrap svg { height: 120px; }
 }

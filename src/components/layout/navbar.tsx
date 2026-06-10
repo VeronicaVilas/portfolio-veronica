@@ -31,7 +31,7 @@ export default function Navbar() {
   }, [menuOpen])
 
   useEffect(() => {
-    const fn = () => { if (window.innerWidth >= 768) setMenuOpen(false) }
+    const fn = () => { if (window.innerWidth >= 950) setMenuOpen(false) }
     window.addEventListener('resize', fn)
     return () => window.removeEventListener('resize', fn)
   }, [])
@@ -65,7 +65,7 @@ export default function Navbar() {
           </span>
         </span>
 
-        <ul className="hidden md:flex gap-[1.8rem] list-none">
+        <ul className="hidden min-[950px]:flex gap-[1.8rem] list-none">
           {NAV_LINKS.map(link => (
             <li key={link.to}>
               <Link
@@ -91,7 +91,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden min-[950px]:flex items-center gap-2">
 
             <button
               onClick={toggleTheme}
@@ -164,7 +164,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setMenuOpen(prev => !prev)}
-            className="md:hidden flex flex-col gap-[5px] p-1 cursor-pointer"
+            className="min-[950px]:hidden flex flex-col gap-[5px] p-1 cursor-pointer"
             aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={menuOpen}
           >
@@ -177,7 +177,7 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-[190] bg-[var(--bg)] flex flex-col items-center justify-center gap-8 md:hidden">
+        <div className="fixed inset-0 z-[190] bg-[var(--bg)] flex flex-col items-center justify-center gap-8 min-[950px]:hidden">
 
           <ul className="flex flex-col items-center gap-8 list-none">
             {[...NAV_LINKS, { label: 'Contato', labelEn: 'Contact', to: 'contato' }].map(link => (

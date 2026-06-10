@@ -38,42 +38,43 @@ export default function About() {
                     <em>{t('Sobre Mim', 'About Me')}</em><br />
                 </h2>
 
+                <div className="about-visual-group">
+                    <div className="about-orbital-col">
+                        <div className="photo-orbital">
+                            <div className="orb-ring orb-ring-1" />
+                            <div className="orb-ring orb-ring-2" />
+                            <div className="orb-ring orb-ring-3" />
+                            <div className="orb-orbit orb-orbit-1"><div className="orb-dot" /></div>
+                            <div className="orb-orbit orb-orbit-2">
+                                <div className="orb-dot" />
+                                <div className="orb-dot orb-dot-2" />
+                            </div>
+                            <div className="orb-orbit orb-orbit-3">
+                                <div className="orb-dot" />
+                                <div className="orb-dot orb-dot-2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="about-photo-col">
+                        <div className="photo-frame">
+                            <Image
+                                src="/veronica.png"
+                                alt="Verônica Vilas"
+                                width={320}
+                                height={320}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
+                                priority
+                            />
+                        </div>
+                    </div>
+                </div>
+
                 <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_1[lang] }} />
 
                 <div className="about-content">
                     <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_2[lang] }} />
                 </div>
 
-            </div>
-
-            <div className="about-orbital-col">
-                <div className="photo-orbital">
-                    <div className="orb-ring orb-ring-1" />
-                    <div className="orb-ring orb-ring-2" />
-                    <div className="orb-ring orb-ring-3" />
-                    <div className="orb-orbit orb-orbit-1"><div className="orb-dot" /></div>
-                    <div className="orb-orbit orb-orbit-2">
-                        <div className="orb-dot" />
-                        <div className="orb-dot orb-dot-2" />
-                    </div>
-                    <div className="orb-orbit orb-orbit-3">
-                        <div className="orb-dot" />
-                        <div className="orb-dot orb-dot-2" />
-                    </div>
-                </div>
-            </div>
-
-            <div className="about-photo-col">
-                <div className="photo-frame">
-                    <Image
-                        src="/veronica.png"
-                        alt="Verônica Vilas"
-                        width={320}
-                        height={320}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
-                        priority
-                    />
-                </div>
             </div>
         </div>
     )

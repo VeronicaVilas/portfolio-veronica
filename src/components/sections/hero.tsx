@@ -104,7 +104,7 @@ export default function Hero() {
     }, [])
 
     return (
-        <section id="hero" className="relative min-h-screen overflow-hidden ">
+        <section id="hero" className="relative overflow-hidden">
             <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full pointer-events-none"
