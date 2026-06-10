@@ -268,7 +268,6 @@ export default function Experience() {
                     <span>{t('Profissional', 'Experience')}</span>
                 </h2>
 
-                {/* Main timeline */}
                 <div className="timeline-wrap">
                     <div className="timeline-spine" />
                     {MAIN_EXP.map((item, i) => (
@@ -281,7 +280,6 @@ export default function Experience() {
                     ))}
                 </div>
 
-                {/* Toggle button */}
                 <div ref={toggleRef} className="other-exp-toggle reveal" style={{ marginTop: '2.5rem' }}>
                     <button
                         className={`other-exp-btn${open ? ' open' : ''}`}
@@ -301,14 +299,13 @@ export default function Experience() {
                         </span>
                         <span className="other-exp-hint">
                             {t(
-                                'Atento · UCSal — antes da transição para tech',
-                                'Atento · UCSal — before the tech transition'
+                                'Antes da transição para tech',
+                                'Before the tech transition'
                             )}
                         </span>
                     </button>
                 </div>
 
-                {/* Collapsible other experiences */}
                 <div
                     ref={wrapRef}
                     className={`other-exp-wrap${open ? ' open' : ''}`}
