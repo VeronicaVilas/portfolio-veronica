@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+✦ ✦ ✦
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# veronica-vilas-portfolio
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> portfólio pessoal feito com carinho (e muito café) ☕
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[![Ver portfólio](https://img.shields.io/badge/🚀_Ver_portfólio-ao_vivo-D4A853?style=for-the-badge&labelColor=0E0A05)](https://veronica-vilas.dev)
 
-## Learn More
+</div>
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## hey, oi! 👋
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+esse aqui é o código do meu portfólio pessoal, uma vitrine de apresentação como um acervo para acompanhamento do meu progresso.
 
-## Deploy on Vercel
+construído com **Next.js 15 + TypeScript + Tailwind v4**, respeitando princípios **SOLID** do início ao fim: cada componente tem uma responsabilidade única, as seções são abertas pra extensão mas fechadas pra modificação desnecessária, e os hooks abstraem lógica sem vazar estado pra lugar nenhum.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+a paleta veio de tons terrosos e dourados que remetem a algo quente, artesanal e sofisticado ao mesmo tempo, sendo minah cor favorita atualmente. O fundo quadriculado na formação foi inspirado em scrapbooks e o círculo orbital foi inspirado no modelo atômico de Bohr, uma ligação com minha formação. Cada seção tem uma identidade visual própria mas conversa com as outras.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## tecnologias 🛠️
+
+| Tecnologia | Versão |
+|---|---|
+| [Next.js](https://nextjs.org) | 16.2.7 |
+| [React](https://react.dev) | 19.2.4 |
+| [TypeScript](https://www.typescriptlang.org) | 5.x |
+| [Tailwind CSS](https://tailwindcss.com) | 4.x |
+| [Framer Motion](https://www.framer.com/motion) | 12.40.0 |
+| [Lucide React](https://lucide.dev) | 1.17.0 |
+| [React Scroll](https://github.com/fisshy/react-scroll) | 1.9.3 |
+| [Git](https://git-scm.com) | — |
+| [GitHub](https://github.com) | — |
+| [Vercel](https://vercel.com) | — |
+
+---
+
+## como rodar localmente 🏃‍♀️
+
+```bash
+# clone o repositório
+git clone https://github.com/VeronicaVilas/portfolio.git
+
+# entre na pasta
+cd portfolio
+
+# instale as dependências
+npm install
+
+# rode em modo desenvolvimento
+npm run dev
+```
+
+acesse `http://localhost:3000` e seja bem-vinda. 🎉
+
+---
+
+## personalizando 🎨
+
+**trocar a foto:**
+```
+substitua o arquivo public/foto.jpg pela sua foto
+```
+
+**trocar o currículo:**
+```
+substitua o arquivo public/cv.pdf pelo seu currículo
+```
+
+**mudar os dados:**
+```ts
+// edite src/data/portfolio.ts
+// lá ficam experiências, projetos, cursos e traduções PT/EN
+```
+
+**mudar as cores:**
+```css
+/* em src/app/globals.css, dentro de :root */
+--terra: #7C5C3A;   /* cor principal terracota */
+--sand:  #C4A882;   /* areia dourada */
+--gold:  #D4A853;   /* dourado */
+```
+
+---
+
+## licença 📜
+
+código open source sob licença MIT, pode olhar, pode aprender, pode se inspirar.
+
+só não copia inteiro e coloca seu nome, isso é feio. 😅
+
+---
+
+<div align="center">
+
+feito com 🤎 em Salvador, BA
+
+**[Verônica Vilas](https://github.com/VeronicaVilas)** · Full Stack Developer
+
+*"do zero ao deploy, com visão de produto"*
+
+</div>
