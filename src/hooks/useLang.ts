@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 export type Lang = 'pt' | 'en'
 
@@ -13,7 +13,6 @@ function broadcast(l: Lang) {
 }
 
 export function useLang() {
-
     const [lang, setLocal] = useState<Lang>(_current)
 
     useEffect(() => {
@@ -21,7 +20,15 @@ export function useLang() {
         return () => { _subs.delete(setLocal) }
     }, [])
 
-    const setLang = (l: Lang) => broadcast(l)
+    const setLang = useCallback((l: Lang) => broadcast(l), [])
 
     return { lang, setLang }
+}
+
+export function useT() {
+    const { lang } = useLang()
+    return useCallback(
+        (pt: string, en: string) => lang === 'pt' ? pt : en,
+        [lang]
+    )
 }
