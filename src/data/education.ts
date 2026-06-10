@@ -51,7 +51,7 @@ export const EDU_DEGREES: EduDegree[] = [
 
 export const EDU_COURSES: EduCourse[] = [
   { id: 'cisco',    year: '2026',        namePt: 'Introdução à Cibersegurança',                     nameEn: 'Introduction to Cybersecurity',         inst: 'CISCO'          },
-  { id: 'cisco',    year: '2026',        namePt: 'Fundamentos em Redes',                     nameEn: 'Introduction to Cybersecurity',         inst: 'CISCO'          },
+  { id: 'cisco-net', year: '2026',        namePt: 'Fundamentos em Redes',                     nameEn: 'Networking Basics',                     inst: 'CISCO'          },
   { id: 'cepedi',   year: '2024 – 2025', namePt: 'Desenvolvimento Front-end (UI/UX + Angular 13+)', nameEn: 'Front-end Development (UI/UX + Angular 13+)', inst: 'CEPEDI'    },
   { id: 'php',      year: '2024',        namePt: 'PHP Moderno',                                     nameEn: 'Modern PHP',                            inst: 'Curso em Vídeo' },
   { id: 'seemore',  year: '',            namePt: '',                                                 nameEn: '',                                      inst: '', seemore: true },

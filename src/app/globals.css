@@ -484,8 +484,9 @@
 
 .photo-orbital {
   position: relative;
-  width: 280px;
-  height: 280px;
+  width: 490px;
+  height: 490px;
+  left: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -533,9 +534,10 @@
 .orb-orbit-3 .orb-dot-2 { width: 4px; height: 4px; background: var(--terra); bottom: 10%; right: 10%; transform: translate(50%, 50%); }
 
 .photo-frame {
-  width: 240px;
-  height: 240px;
+  width: 450px;
+  height: 450px;
   border-radius: 50%;
+  left: 100px;
   background: rgba(0, 0, 0, .2);
   border: 3px solid rgba(240, 232, 218, .15);
   overflow: hidden;
@@ -643,6 +645,9 @@
 @media (max-width: 768px) {
   .about-strip { padding: 3rem 2rem 5rem; overflow: hidden; }
   .about-content { max-width: 100%; }
+  .about-visual-group { overflow: visible; }
+  .photo-orbital { width: 280px; height: 280px; left: 0; }
+  .photo-frame { width: 240px; height: 240px; left: 0; }
 }
 @media (max-width: 480px) {
   .about-strip { padding: 2.5rem 1.4rem 4rem; }
