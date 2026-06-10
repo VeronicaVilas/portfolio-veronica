@@ -1,34 +1,25 @@
 'use client'
 
-import { useRef, useEffect, useState, useCallback } from 'react'
-import { useLang } from '../../hooks/useLang'
+import { useRef, useEffect, useState, useCallback, memo } from 'react'
+import { useLang, useT, type Lang } from '../../hooks/useLang'
+import { useReveal } from '../../hooks/useReveal'
+import { useScrollLock } from '../../hooks/useScrollLock'
+import { useMouseGlow } from '../../hooks/useMouseGlow'
+import Modal from '../ui/Modal'
 import { MAIN_EXP, OTHER_EXP, type ExpItem } from '../../data/experience'
 
-function useReveal(ref: React.RefObject<HTMLElement | null>) {
-    useEffect(() => {
-        const el = ref.current
-        if (!el) return
-        const io = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); io.disconnect() } },
-            { threshold: 0.1 }
-        )
-        io.observe(el)
-        return () => io.disconnect()
-    }, [])
-}
-
-function TlCard({ item, onDetails }: { item: ExpItem; onDetails: () => void }) {
-    const { lang } = useLang()
-    const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+const TlCard = memo(function TlCard({
+    item,
+    lang,
+    onDetails,
+}: {
+    item: ExpItem
+    lang: Lang
+    onDetails: () => void
+}) {
+    const t       = (pt: string, en: string) => lang === 'pt' ? pt : en
     const cardRef = useRef<HTMLDivElement>(null)
-
-    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        const card = cardRef.current
-        if (!card) return
-        const r = card.getBoundingClientRect()
-        card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
-        card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
-    }, [])
+    const onMouseMove = useMouseGlow(cardRef)
 
     const periodDisplay = item.isCurrent
         ? `${item.period} – ${t('atual', 'present')}`
@@ -37,7 +28,7 @@ function TlCard({ item, onDetails }: { item: ExpItem; onDetails: () => void }) {
     const cardClass = ['tl-card', item.isEdu ? 'tl-card-edu' : ''].filter(Boolean).join(' ')
 
     return (
-        <div ref={cardRef} className={cardClass} onMouseMove={handleMouseMove}>
+        <div ref={cardRef} className={cardClass} onMouseMove={onMouseMove}>
             <div className="tl-header">
                 <div className="tl-header-left">
                     <div className="tl-role">{t(item.rolePt, item.roleEn)}</div>
@@ -69,21 +60,23 @@ function TlCard({ item, onDetails }: { item: ExpItem; onDetails: () => void }) {
             </div>
         </div>
     )
-}
+})
 
-function TlItem({
+const TlItem = memo(function TlItem({
     item,
+    lang,
     delay = 0,
     isOther = false,
     onDetails,
 }: {
     item: ExpItem
+    lang: Lang
     delay?: 0 | 1 | 2 | 3 | 4
     isOther?: boolean
     onDetails: () => void
 }) {
     const itemRef = useRef<HTMLDivElement>(null)
-    useReveal(itemRef as React.RefObject<HTMLElement>)
+    useReveal(itemRef)
 
     const itemClass = [
         'tl-item reveal',
@@ -96,16 +89,14 @@ function TlItem({
     return (
         <div ref={itemRef} className={itemClass}>
             <div className="tl-dot" />
-            <TlCard item={item} onDetails={onDetails} />
+            <TlCard item={item} lang={lang} onDetails={onDetails} />
         </div>
     )
-}
+})
 
-function ExpModal({ item, onClose }: { item: ExpItem; onClose: () => void }) {
-    const { lang } = useLang()
-    const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+function ExpModal({ item, lang, onClose }: { item: ExpItem; lang: Lang; onClose: () => void }) {
+    const t       = (pt: string, en: string) => lang === 'pt' ? pt : en
     const listRef = useRef<HTMLUListElement>(null)
-
     const details = lang === 'pt' ? item.detailsPt : item.detailsEn
 
     const periodDisplay = item.isCurrent
@@ -119,12 +110,10 @@ function ExpModal({ item, onClose }: { item: ExpItem; onClose: () => void }) {
             el.style.opacity = '0'
             el.style.transform = 'translateX(-10px)'
             el.style.transition = `opacity .4s ${i * 0.07}s, transform .4s ${i * 0.07}s`
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    el.style.opacity = ''
-                    el.style.transform = ''
-                })
-            })
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                el.style.opacity = ''
+                el.style.transform = ''
+            }))
         })
     }, [])
 
@@ -132,9 +121,7 @@ function ExpModal({ item, onClose }: { item: ExpItem; onClose: () => void }) {
         <div className="modal-box">
             <div className="modal-header">
                 <div>
-                    <div className="modal-eyebrow">
-                        {item.company} · {item.location}
-                    </div>
+                    <div className="modal-eyebrow">{item.company} · {item.location}</div>
                     <h3 className="modal-title">{t(item.rolePt, item.roleEn)}</h3>
                     <div className="exp-modal-meta">
                         <span className="tl-badge" style={{ marginTop: '6px' }}>
@@ -143,27 +130,19 @@ function ExpModal({ item, onClose }: { item: ExpItem; onClose: () => void }) {
                         <span className="exp-modal-period">{periodDisplay}</span>
                     </div>
                 </div>
-                <button
-                    className="modal-close"
-                    onClick={onClose}
-                    aria-label={t('Fechar modal', 'Close modal')}
-                >
+                <button className="modal-close" onClick={onClose} aria-label={t('Fechar modal', 'Close modal')}>
                     ✕
                 </button>
             </div>
 
             <div className="modal-body">
                 <div className="exp-modal-section">
-                    <div className="exp-modal-section-label">
-                        {t('resumo', 'summary')}
-                    </div>
+                    <div className="exp-modal-section-label">{t('resumo', 'summary')}</div>
                     <p className="exp-modal-summary">{t(item.descPt, item.descEn)}</p>
                 </div>
 
                 <div className="exp-modal-section">
-                    <div className="exp-modal-section-label">
-                        {t('tecnologias & ferramentas', 'technologies & tools')}
-                    </div>
+                    <div className="exp-modal-section-label">{t('tecnologias & ferramentas', 'technologies & tools')}</div>
                     <div className="tl-techs" style={{ marginTop: '8px' }}>
                         {item.techs.map(tech => (
                             <span key={tech} className="tech-tag">{tech}</span>
@@ -190,64 +169,43 @@ function ExpModal({ item, onClose }: { item: ExpItem; onClose: () => void }) {
 
             <div className="modal-footer">
                 <span />
-                <button className="btn-ghost" onClick={onClose}>
-                    {t('Fechar', 'Close')}
-                </button>
+                <button className="btn-ghost" onClick={onClose}>{t('Fechar', 'Close')}</button>
             </div>
         </div>
     )
 }
 
 export default function Experience() {
-    const { lang } = useLang()
-    const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+    const t          = useT()
+    const { lang }   = useLang()
 
-    const [open, setOpen] = useState(false)
     const [activeItem, setActiveItem] = useState<ExpItem | null>(null)
-    const wrapRef = useRef<HTMLDivElement>(null)
+    const [open, setOpen]             = useState(false)
+    const wrapRef  = useRef<HTMLDivElement>(null)
     const innerRef = useRef<HTMLDivElement>(null)
 
     const eyebrowRef = useRef<HTMLDivElement>(null)
-    const titleRef = useRef<HTMLHeadingElement>(null)
-    const toggleRef = useRef<HTMLDivElement>(null)
+    const titleRef   = useRef<HTMLHeadingElement>(null)
+    const toggleRef  = useRef<HTMLDivElement>(null)
 
-    useReveal(eyebrowRef as React.RefObject<HTMLElement>)
-    useReveal(titleRef as React.RefObject<HTMLElement>)
-    useReveal(toggleRef as React.RefObject<HTMLElement>)
+    useReveal(eyebrowRef)
+    useReveal(titleRef)
+    useReveal(toggleRef)
+    useScrollLock(!!activeItem)
 
-    const openModal = useCallback((item: ExpItem) => {
-        setActiveItem(item)
-        document.body.style.overflow = 'hidden'
-        document.documentElement.style.overflow = 'hidden'
-    }, [])
-
-    const closeModal = useCallback(() => {
-        setActiveItem(null)
-        document.body.style.overflow = ''
-        document.documentElement.style.overflow = ''
-    }, [])
-
-    useEffect(() => {
-        const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeModal() }
-        document.addEventListener('keydown', onKey)
-        return () => document.removeEventListener('keydown', onKey)
-    }, [closeModal])
-
-    useEffect(() => () => {
-        document.body.style.overflow = ''
-        document.documentElement.style.overflow = ''
-    }, [])
+    const openModal  = useCallback((item: ExpItem) => setActiveItem(item), [])
+    const closeModal = useCallback(() => setActiveItem(null), [])
 
     const handleToggle = () => {
-        const wrap = wrapRef.current
+        const wrap  = wrapRef.current
         const inner = innerRef.current
         if (!wrap || !inner) return
 
         if (open) {
             wrap.style.maxHeight = wrap.scrollHeight + 'px'
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => { wrap.style.maxHeight = '0' })
-            })
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                wrap.style.maxHeight = '0'
+            }))
             setOpen(false)
         } else {
             setOpen(true)
@@ -274,6 +232,7 @@ export default function Experience() {
                         <TlItem
                             key={item.id}
                             item={item}
+                            lang={lang}
                             delay={((i % 4) + 1) as 1 | 2 | 3 | 4}
                             onDetails={() => openModal(item)}
                         />
@@ -298,19 +257,12 @@ export default function Experience() {
                             <span className="other-exp-arrow">↓</span>
                         </span>
                         <span className="other-exp-hint">
-                            {t(
-                                'Antes da transição para tech',
-                                'Before the tech transition'
-                            )}
+                            {t('Antes da transição para tech', 'Before the tech transition')}
                         </span>
                     </button>
                 </div>
 
-                <div
-                    ref={wrapRef}
-                    className={`other-exp-wrap${open ? ' open' : ''}`}
-                    aria-hidden={!open}
-                >
+                <div ref={wrapRef} className={`other-exp-wrap${open ? ' open' : ''}`} aria-hidden={!open}>
                     <div ref={innerRef} className="other-exp-inner">
                         <div className="timeline-wrap" style={{ marginTop: '1.5rem' }}>
                             <div
@@ -321,6 +273,7 @@ export default function Experience() {
                                 <TlItem
                                     key={item.id}
                                     item={item}
+                                    lang={lang}
                                     delay={((i % 4) + 1) as 1 | 2 | 3 | 4}
                                     isOther
                                     onDetails={() => openModal(item)}
@@ -331,15 +284,9 @@ export default function Experience() {
                 </div>
             </section>
 
-            <div
-                className={`modal-overlay${activeItem ? ' open' : ''}`}
-                onClick={(e) => { if (e.target === e.currentTarget) closeModal() }}
-                aria-modal="true"
-                role="dialog"
-                aria-labelledby="modal-exp-title"
-            >
-                {activeItem && <ExpModal item={activeItem} onClose={closeModal} />}
-            </div>
+            <Modal open={!!activeItem} onClose={closeModal} labelledById="modal-exp-title">
+                {activeItem && <ExpModal item={activeItem} lang={lang} onClose={closeModal} />}
+            </Modal>
         </>
     )
 }

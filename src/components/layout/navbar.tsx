@@ -1,23 +1,78 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { Link } from 'react-scroll'
-import { useLang } from '../../hooks/useLang'
-import { useTheme } from '../../hooks/useTheme'
+import { useLang, useT, type Lang } from '../../hooks/useLang'
+import { useTheme, type Theme } from '../../hooks/useTheme'
 
 const NAV_LINKS = [
-  { label: 'Experiência',  labelEn: 'Experience',   to: 'experiencia' },
-  { label: 'Habilidades',       labelEn: 'Skills',        to: 'skills'      },
-  { label: 'Projetos',     labelEn: 'Projects',      to: 'projetos'    },
-  { label: 'Formação',     labelEn: 'Education',     to: 'formacao'    },
+  { label: 'Experiência', labelEn: 'Experience', to: 'experiencia' },
+  { label: 'Habilidades',  labelEn: 'Skills',     to: 'skills'      },
+  { label: 'Projetos',    labelEn: 'Projects',    to: 'projetos'    },
+  { label: 'Formação',    labelEn: 'Education',   to: 'formacao'    },
 ]
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
+const ThemeToggle = memo(function ThemeToggle({
+  theme,
+  toggleTheme,
+}: {
+  theme: Theme
+  toggleTheme: () => void
+}) {
+  return (
+    <button
+      onClick={toggleTheme}
+      className="
+        w-[34px] h-[34px] rounded-full
+        bg-[var(--bg3)] border-[0.5px] border-[var(--border2)]
+        text-[var(--text2)] text-[.85rem]
+        flex items-center justify-center
+        transition-all duration-300
+        hover:bg-[var(--bg4)] hover:text-[var(--sand)]
+      "
+      aria-label={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
+    >
+      {theme === 'dark' ? '☀' : '☾'}
+    </button>
+  )
+})
 
-  const { theme, toggleTheme } = useTheme()
-  const { lang, setLang } = useLang()
-  const [menuOpen, setMenuOpen] = useState(false)
+const LangToggle = memo(function LangToggle({
+  lang,
+  setLang,
+}: {
+  lang: Lang
+  setLang: (l: Lang) => void
+}) {
+  return (
+    <div className="flex border-[0.5px] border-[var(--border2)] rounded-[20px] overflow-hidden">
+      {(['pt', 'en'] as const).map(l => (
+        <button
+          key={l}
+          onClick={() => setLang(l)}
+          className={`
+            font-sans text-[.62rem] tracking-[.1em] uppercase
+            px-[.65rem] py-[.32rem]
+            transition-all duration-300
+            ${lang === l
+              ? 'bg-[var(--sand)] text-[var(--bg)] font-medium'
+              : 'text-[var(--text3)] bg-transparent'
+            }
+          `}
+        >
+          {l}
+        </button>
+      ))}
+    </div>
+  )
+})
+
+export default function Navbar() {
+  const [scrolled, setScrolled]   = useState(false)
+  const [menuOpen, setMenuOpen]   = useState(false)
+  const { theme, toggleTheme }    = useTheme()
+  const { lang, setLang }         = useLang()
+  const t                         = useT()
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60)
@@ -37,7 +92,6 @@ export default function Navbar() {
   }, [])
 
   const handleMobileLink = () => setMenuOpen(false)
-  const t = (pt: string, en: string) => lang === 'pt' ? pt : en
 
   return (
     <>
@@ -90,44 +144,9 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-
           <div className="hidden min-[950px]:flex items-center gap-2">
-
-            <button
-              onClick={toggleTheme}
-              className="
-                w-[34px] h-[34px] rounded-full
-                bg-[var(--bg3)] border-[0.5px] border-[var(--border2)]
-                text-[var(--text2)] text-[.85rem]
-                flex items-center justify-center
-                transition-all duration-300
-                hover:bg-[var(--bg4)] hover:text-[var(--sand)]
-              "
-              aria-label={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
-            >
-              {theme === 'dark' ? '☀' : '☾'}
-            </button>
-
-            <div className="flex border-[0.5px] border-[var(--border2)] rounded-[20px] overflow-hidden">
-              {(['pt', 'en'] as const).map(l => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className={`
-                    font-sans text-[.62rem] tracking-[.1em] uppercase
-                    px-[.65rem] py-[.32rem]
-                    transition-all duration-300
-                    ${lang === l
-                      ? 'bg-[var(--sand)] text-[var(--bg)] font-medium'
-                      : 'text-[var(--text3)] bg-transparent'
-                    }
-                  `}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
-
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <LangToggle lang={lang} setLang={setLang} />
             <a
               href="/cv.pdf"
               download
@@ -143,7 +162,6 @@ export default function Navbar() {
               <span>⬇</span>
               <span>{t('Currículo', 'Resume')}</span>
             </a>
-
             <Link
               to="contato"
               smooth={true}
@@ -159,7 +177,6 @@ export default function Navbar() {
             >
               {t('Contato →', 'Contact →')}
             </Link>
-
           </div>
 
           <button
@@ -172,13 +189,11 @@ export default function Navbar() {
             <span className={`block w-[22px] h-[1.5px] bg-[var(--sand)] transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
             <span className={`block w-[22px] h-[1.5px] bg-[var(--sand)] transition-all duration-300 origin-center ${menuOpen ? '-rotate-45 -translate-y-[6.5px]' : ''}`} />
           </button>
-
         </div>
       </nav>
 
       {menuOpen && (
         <div className="fixed inset-0 z-[190] bg-[var(--bg)] flex flex-col items-center justify-center gap-8 min-[950px]:hidden">
-
           <ul className="flex flex-col items-center gap-8 list-none">
             {[...NAV_LINKS, { label: 'Contato', labelEn: 'Contact', to: 'contato' }].map(link => (
               <li key={link.to}>
@@ -201,41 +216,8 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-[.625rem] flex-wrap justify-center mt-4">
-
-            <button
-              onClick={toggleTheme}
-              className="
-                w-[34px] h-[34px] rounded-full
-                bg-[var(--bg3)] border-[0.5px] border-[var(--border2)]
-                text-[var(--text2)] text-[.85rem]
-                flex items-center justify-center
-                transition-all duration-300
-              "
-              aria-label={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
-            >
-              {theme === 'dark' ? '☀' : '☾'}
-            </button>
-
-            <div className="flex border-[0.5px] border-[var(--border2)] rounded-[20px] overflow-hidden">
-              {(['pt', 'en'] as const).map(l => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className={`
-                    font-sans text-[.62rem] tracking-[.1em] uppercase
-                    px-[.65rem] py-[.32rem]
-                    transition-all duration-300
-                    ${lang === l
-                      ? 'bg-[var(--sand)] text-[var(--bg)] font-medium'
-                      : 'text-[var(--text3)] bg-transparent'
-                    }
-                  `}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
-
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <LangToggle lang={lang} setLang={setLang} />
             <a
               href="/cv.pdf"
               download
@@ -252,7 +234,6 @@ export default function Navbar() {
               <span>⬇</span>
               <span>CV</span>
             </a>
-
           </div>
         </div>
       )}

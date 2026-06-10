@@ -1,8 +1,9 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
-import { useLang } from '../../hooks/useLang'
+import { useT } from '../../hooks/useLang'
+import { useReveal } from '../../hooks/useReveal'
 
 const BIO_1 = {
     pt: 'Minha trajetória profissional é marcada pela capacidade de me reinventar, aprender rapidamente e transformar desafios em oportunidades. Sou Desenvolvedora <strong>Full Stack</strong> com formação em <strong>Engenharia Química</strong>, uma base que me proporcionou forte pensamento analítico, visão sistêmica e uma abordagem estruturada para resolução de problemas complexos. Essa combinação me permite enxergar além do código, compreendendo não apenas a tecnologia, mas também o negócio, os processos e as necessidades reais dos usuários. Minha transição para a área de tecnologia foi construída por meio de muito estudo, projetos práticos e experiências em ambientes dinâmicos. Ao longo da minha jornada, participei de <strong>startups, programas de residência tecnológica e mentorias em engenharia de software</strong>, experiências que fortaleceram minha capacidade de adaptação, colaboração em equipe e entrega de soluções com foco em impacto e geração de valor. Tenho experiência no desenvolvimento de aplicações web completas, atuando desde a concepção da ideia até a implementação, integração de sistemas, modelagem de banco de dados e deploy. Ao longo dos anos, trabalhei com diferentes tecnologias e contextos de negócio, desenvolvendo sistemas corporativos, plataformas digitais, APIs, automações, dashboards e soluções voltadas para otimização de processos.',
@@ -15,25 +16,13 @@ const BIO_2 = {
 }
 
 export default function About() {
-    const { lang } = useLang()
-    const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+    const t   = useT()
     const ref = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        const el = ref.current
-        if (!el) return
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); observer.disconnect() } },
-            { threshold: 0.1 }
-        )
-        observer.observe(el)
-        return () => observer.disconnect()
-    }, [])
+    useReveal(ref)
 
     return (
         <div className="about-wrapper">
             <div ref={ref} className="about-strip reveal">
-
                 <h2 className="sec-title-about">
                     <em>{t('Sobre Mim', 'About Me')}</em><br />
                 </h2>
@@ -69,12 +58,11 @@ export default function About() {
                     </div>
                 </div>
 
-                <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_1[lang] }} />
+                <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_1[t('pt', 'en') as 'pt' | 'en'] }} />
 
                 <div className="about-content">
-                    <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_2[lang] }} />
+                    <p className="about-bio" dangerouslySetInnerHTML={{ __html: BIO_2[t('pt', 'en') as 'pt' | 'en'] }} />
                 </div>
-
             </div>
         </div>
     )

@@ -1,35 +1,22 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
-import { useLang } from '../../hooks/useLang'
-
-function useReveal(ref: React.RefObject<HTMLElement | null>) {
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); io.disconnect() } },
-      { threshold: 0.1 }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-}
+import { useT } from '../../hooks/useLang'
+import { useReveal } from '../../hooks/useReveal'
 
 export default function Contact() {
-  const { lang } = useLang()
-  const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+  const t = useT()
 
-  const eyebrowRef     = useRef<HTMLDivElement>(null)
-  const titleRef       = useRef<HTMLDivElement>(null)
-  const linksRef       = useRef<HTMLDivElement>(null)
+  const eyebrowRef      = useRef<HTMLDivElement>(null)
+  const titleRef        = useRef<HTMLDivElement>(null)
+  const linksRef        = useRef<HTMLDivElement>(null)
   const illustrationRef = useRef<HTMLDivElement>(null)
 
-  useReveal(eyebrowRef      as React.RefObject<HTMLElement>)
-  useReveal(titleRef        as React.RefObject<HTMLElement>)
-  useReveal(linksRef        as React.RefObject<HTMLElement>)
-  useReveal(illustrationRef as React.RefObject<HTMLElement>)
+  useReveal(eyebrowRef)
+  useReveal(titleRef)
+  useReveal(linksRef)
+  useReveal(illustrationRef)
 
   return (
     <section id="contato">
@@ -40,7 +27,6 @@ export default function Contact() {
       </div>
 
       <div className="contact-layout">
-        {/* Left: title + links */}
         <div className="contact-left">
           <div ref={titleRef} className="contact-big reveal">
             <span>{t('Vamos construir', 'Shall we build')}</span>

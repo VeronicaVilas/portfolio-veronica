@@ -1,58 +1,36 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
-import { useLang } from '../../hooks/useLang'
+import { useRef, useState, useMemo, memo } from 'react'
+import { useLang, useT, type Lang } from '../../hooks/useLang'
+import { useReveal } from '../../hooks/useReveal'
+import { useMouseGlow } from '../../hooks/useMouseGlow'
 import { PROJECTS, FILTER_TAGS, type Project } from '../../data/projects'
 
-function useReveal(ref: React.RefObject<HTMLElement | null>) {
-    const [revealed, setRevealed] = useState(false)
-    useEffect(() => {
-        const el = ref.current
-        if (!el) return
-        const io = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { setRevealed(true); io.disconnect() } },
-            { threshold: 0.1 }
-        )
-        io.observe(el)
-        return () => io.disconnect()
-    }, [])
-    return revealed
-}
-
-function ProjectCard({
+const ProjectCard = memo(function ProjectCard({
     project,
     lang,
     filtered,
     delay,
 }: {
     project: Project
-    lang: 'pt' | 'en'
+    lang: Lang
     filtered: boolean
     delay?: 1 | 2 | 3
 }) {
-    const cardRef = useRef<HTMLDivElement>(null)
-    const revealed = useReveal(cardRef as React.RefObject<HTMLElement>)
+    const cardRef     = useRef<HTMLDivElement>(null)
+    const onMouseMove = useMouseGlow(cardRef)
+    useReveal(cardRef)
 
-    const t = (pt: string, en: string) => lang === 'pt' ? pt : en
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        const card = cardRef.current
-        if (!card) return
-        const r = card.getBoundingClientRect()
-        card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%')
-        card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%')
-    }
-
-    const delayClass = delay ? ` rd${delay}` : ''
-    const revealedClass = revealed ? ' visible' : ''
+    const t           = (pt: string, en: string) => lang === 'pt' ? pt : en
+    const delayClass  = delay ? ` rd${delay}` : ''
     const filteredClass = filtered ? ' filtered-out' : ''
 
     if (project.wide) {
         return (
             <div
                 ref={cardRef}
-                className={`proj-card proj-card-wide reveal${revealedClass}${filteredClass}`}
-                onMouseMove={handleMouseMove}
+                className={`proj-card proj-card-wide reveal${filteredClass}`}
+                onMouseMove={onMouseMove}
             >
                 <div>
                     <div className="proj-icon-wrap">{project.icon}</div>
@@ -82,12 +60,7 @@ function ProjectCard({
                     )}
                     {project.link && (
                         <div style={{ marginTop: '1.5rem' }}>
-                            <a
-                                className="btn-primary"
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                            <a className="btn-primary" href={project.link} target="_blank" rel="noopener noreferrer">
                                 {t('Ver projeto →', 'View project →')}
                             </a>
                         </div>
@@ -100,8 +73,8 @@ function ProjectCard({
     return (
         <div
             ref={cardRef}
-            className={`proj-card reveal${delayClass}${revealedClass}${filteredClass}`}
-            onMouseMove={handleMouseMove}
+            className={`proj-card reveal${delayClass}${filteredClass}`}
+            onMouseMove={onMouseMove}
         >
             {(project.github || project.link) && (
                 <div className="proj-card-actions">
@@ -134,43 +107,44 @@ function ProjectCard({
             </div>
         </div>
     )
-}
+})
 
 const CARD_DELAYS = [undefined, 1, 2, 3] as const
 
 export default function Projects() {
-    const { lang } = useLang()
-    const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+    const t            = useT()
+    const { lang }     = useLang()
     const [activeFilter, setActiveFilter] = useState<string>('all')
 
     const eyebrowRef = useRef<HTMLDivElement>(null)
     const titleRef   = useRef<HTMLHeadingElement>(null)
     const filtersRef = useRef<HTMLDivElement>(null)
 
-    const eyebrowRevealed = useReveal(eyebrowRef as React.RefObject<HTMLElement>)
-    const titleRevealed   = useReveal(titleRef   as React.RefObject<HTMLElement>)
-    const filtersRevealed = useReveal(filtersRef as React.RefObject<HTMLElement>)
+    useReveal(eyebrowRef)
+    useReveal(titleRef)
+    useReveal(filtersRef)
 
-    const isFiltered = (project: Project) => {
-        if (activeFilter === 'all') return false
-        return !project.techs.includes(activeFilter)
-    }
+    const isFiltered = (project: Project) =>
+        activeFilter !== 'all' && !project.techs.includes(activeFilter)
 
-    const visibleCount = PROJECTS.filter(p => !isFiltered(p)).length
+    const visibleCount = useMemo(
+        () => PROJECTS.filter(p => activeFilter === 'all' || p.techs.includes(activeFilter)).length,
+        [activeFilter]
+    )
 
     return (
         <section id="projetos">
-            <div ref={eyebrowRef} className={`sec-eyebrow reveal${eyebrowRevealed ? ' visible' : ''}`}>
+            <div ref={eyebrowRef} className="sec-eyebrow reveal">
                 <span className="sec-num">03</span>
                 <div className="sec-dash" />
                 <span className="sec-label">{t('portfólio', 'portfolio')}</span>
             </div>
-            <h2 ref={titleRef} className={`sec-title reveal${titleRevealed ? ' visible' : ''}`}>
+            <h2 ref={titleRef} className="sec-title reveal">
                 <span>{t('Projetos em', 'Featured')}</span><br />
                 <em>{t('Destaque', 'Projects')}</em>
             </h2>
 
-            <div ref={filtersRef} className={`proj-filters reveal${filtersRevealed ? ' visible' : ''}`}>
+            <div ref={filtersRef} className="proj-filters reveal">
                 <button
                     className={`pf-btn${activeFilter === 'all' ? ' active' : ''}`}
                     onClick={() => setActiveFilter('all')}

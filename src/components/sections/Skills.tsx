@@ -1,26 +1,14 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
-import { useLang } from '../../hooks/useLang'
+import { useRef, useEffect, memo } from 'react'
+import { useLang, useT, type Lang } from '../../hooks/useLang'
+import { useReveal } from '../../hooks/useReveal'
 import { SKILL_BARS, SKILL_PILLS, type SkillBar } from '../../data/skills'
 
-function useReveal(ref: React.RefObject<HTMLElement | null>) {
-    useEffect(() => {
-        const el = ref.current
-        if (!el) return
-        const io = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); io.disconnect() } },
-            { threshold: 0.1 }
-        )
-        io.observe(el)
-        return () => io.disconnect()
-    }, [])
-}
-
-function SkillRow({ skill, delay, t }: {
+const SkillRow = memo(function SkillRow({ skill, delay, lang }: {
     skill: SkillBar
     delay: 1 | 2 | 3 | 4
-    t: (pt: string, en: string) => string
+    lang: Lang
 }) {
     const rowRef  = useRef<HTMLDivElement>(null)
     const fillRef = useRef<HTMLDivElement>(null)
@@ -44,10 +32,9 @@ function SkillRow({ skill, delay, t }: {
     }, [skill.pct])
 
     const years = new Date().getFullYear() - skill.since
-    const label = t(
-        years === 1 ? '1 ano' : `${years} anos`,
-        years === 1 ? '1 year' : `${years} years`
-    )
+    const label = lang === 'pt'
+        ? (years === 1 ? '1 ano' : `${years} anos`)
+        : (years === 1 ? '1 year' : `${years} years`)
 
     return (
         <div ref={rowRef} className={`skill-row reveal rd${delay}`}>
@@ -58,11 +45,11 @@ function SkillRow({ skill, delay, t }: {
             <span className="skill-pct">{label}</span>
         </div>
     )
-}
+})
 
 export default function Skills() {
-    const { lang } = useLang()
-    const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+    const t          = useT()
+    const { lang }   = useLang()
 
     const eyebrowRef    = useRef<HTMLDivElement>(null)
     const titleRef      = useRef<HTMLHeadingElement>(null)
@@ -70,11 +57,11 @@ export default function Skills() {
     const rightLabelRef = useRef<HTMLDivElement>(null)
     const pillsRef      = useRef<HTMLDivElement>(null)
 
-    useReveal(eyebrowRef    as React.RefObject<HTMLElement>)
-    useReveal(titleRef      as React.RefObject<HTMLElement>)
-    useReveal(leftLabelRef  as React.RefObject<HTMLElement>)
-    useReveal(rightLabelRef as React.RefObject<HTMLElement>)
-    useReveal(pillsRef      as React.RefObject<HTMLElement>)
+    useReveal(eyebrowRef)
+    useReveal(titleRef)
+    useReveal(leftLabelRef)
+    useReveal(rightLabelRef)
+    useReveal(pillsRef)
 
     return (
         <section id="skills">
@@ -98,7 +85,7 @@ export default function Skills() {
                             key={skill.name}
                             skill={skill}
                             delay={((i % 4) + 1) as 1 | 2 | 3 | 4}
-                            t={t}
+                            lang={lang}
                         />
                     ))}
                 </div>

@@ -1,25 +1,23 @@
 'use client'
 
-import { useRef, useEffect, useState, useCallback } from 'react'
-import { useLang } from '../../hooks/useLang'
+import { useRef, useEffect, useState, useCallback, memo } from 'react'
+import { useLang, useT, type Lang } from '../../hooks/useLang'
+import { useReveal } from '../../hooks/useReveal'
+import { useScrollLock } from '../../hooks/useScrollLock'
+import Modal from '../ui/Modal'
 import { EDU_DEGREES, EDU_COURSES, MODAL_COURSES, type EduDegree, type EduCourse } from '../../data/education'
 
-function useReveal(ref: React.RefObject<HTMLElement | null>) {
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); io.disconnect() } },
-      { threshold: 0.1 }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-}
-
-function EduCard({ degree, delay, lang }: { degree: EduDegree; delay: 1 | 2; lang: 'pt' | 'en' }) {
+const EduCard = memo(function EduCard({
+  degree,
+  delay,
+  lang,
+}: {
+  degree: EduDegree
+  delay: 1 | 2
+  lang: Lang
+}) {
   const cardRef = useRef<HTMLDivElement>(null)
-  useReveal(cardRef as React.RefObject<HTMLElement>)
+  useReveal(cardRef)
   const t = (pt: string, en: string) => lang === 'pt' ? pt : en
 
   return (
@@ -30,9 +28,9 @@ function EduCard({ degree, delay, lang }: { degree: EduDegree; delay: 1 | 2; lan
       <span className="edu-chip">{t(degree.chipPt, degree.chipEn)}</span>
     </div>
   )
-}
+})
 
-function CourseCard({
+const CourseCard = memo(function CourseCard({
   course,
   delay,
   lang,
@@ -41,12 +39,12 @@ function CourseCard({
 }: {
   course: EduCourse
   delay: 1 | 2 | 3
-  lang: 'pt' | 'en'
+  lang: Lang
   onSeeMore?: () => void
   modalCount?: number
 }) {
   const cardRef = useRef<HTMLDivElement>(null)
-  useReveal(cardRef as React.RefObject<HTMLElement>)
+  useReveal(cardRef)
   const t = (pt: string, en: string) => lang === 'pt' ? pt : en
 
   if (course.seemore) {
@@ -72,11 +70,7 @@ function CourseCard({
 
   if (course.inProgress) {
     return (
-      <div
-        ref={cardRef}
-        className={`curso-card reveal rd${delay}`}
-        style={{ borderStyle: 'dashed', opacity: 0.70 }}
-      >
+      <div ref={cardRef} className={`curso-card reveal rd${delay}`} style={{ borderStyle: 'dashed', opacity: 0.70 }}>
         <div className="curso-year">{t('em progresso', 'in progress')}</div>
         <div className="curso-name" style={{ color: 'var(--text3)' }}>
           {t('sempre aprendendo...', 'always learning...')}
@@ -93,36 +87,28 @@ function CourseCard({
       <div className="curso-inst">{course.inst}</div>
     </div>
   )
-}
+})
 
 export default function Education() {
-  const { lang } = useLang()
-  const t = (pt: string, en: string) => lang === 'pt' ? pt : en
+  const t          = useT()
+  const { lang }   = useLang()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const modalBodyRef = useRef<HTMLDivElement>(null)
+  const modalBodyRef              = useRef<HTMLDivElement>(null)
 
   const eyebrowRef      = useRef<HTMLDivElement>(null)
   const titleRef        = useRef<HTMLHeadingElement>(null)
   const coursesLabelRef = useRef<HTMLDivElement>(null)
 
-  useReveal(eyebrowRef      as React.RefObject<HTMLElement>)
-  useReveal(titleRef        as React.RefObject<HTMLElement>)
-  useReveal(coursesLabelRef as React.RefObject<HTMLElement>)
+  useReveal(eyebrowRef)
+  useReveal(titleRef)
+  useReveal(coursesLabelRef)
+  useScrollLock(modalOpen)
 
   const informalCount = MODAL_COURSES.filter(c => !c.inProgress).length
 
-  const openModal = useCallback(() => {
-    setModalOpen(true)
-    document.body.style.overflow = 'hidden'
-    document.documentElement.style.overflow = 'hidden'
-  }, [])
-
-  const closeModal = useCallback(() => {
-    setModalOpen(false)
-    document.body.style.overflow = ''
-    document.documentElement.style.overflow = ''
-  }, [])
+  const openModal  = useCallback(() => setModalOpen(true), [])
+  const closeModal = useCallback(() => setModalOpen(false), [])
 
   useEffect(() => {
     if (!modalOpen || !modalBodyRef.current) return
@@ -131,25 +117,12 @@ export default function Education() {
       el.style.opacity = '0'
       el.style.transform = 'translateX(-10px)'
       el.style.transition = `opacity .4s ${i * 0.06}s, transform .4s ${i * 0.06}s`
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          el.style.opacity = ''
-          el.style.transform = ''
-        })
-      })
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.opacity = ''
+        el.style.transform = ''
+      }))
     })
   }, [modalOpen])
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeModal() }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [closeModal])
-
-  useEffect(() => () => {
-    document.body.style.overflow = ''
-    document.documentElement.style.overflow = ''
-  }, [])
 
   const delayFor = (i: number) => ([1, 2, 3, 1, 2, 3, 1][i] ?? 1) as 1 | 2 | 3
 
@@ -179,11 +152,11 @@ export default function Education() {
             />
           ))}
         </div>
+
         <div style={{ marginTop: '3.5rem', position: 'relative', zIndex: 1 }}>
           <div ref={coursesLabelRef} className="cursos-eyebrow reveal">
             {t('cursos complementares', 'complementary courses')}
           </div>
-
           <div className="cursos-grid">
             {EDU_COURSES.map((course, i) => (
               <CourseCard
@@ -197,16 +170,9 @@ export default function Education() {
             ))}
           </div>
         </div>
-
       </section>
 
-      <div
-        className={`modal-overlay${modalOpen ? ' open' : ''}`}
-        onClick={(e) => { if (e.target === e.currentTarget) closeModal() }}
-        aria-modal="true"
-        role="dialog"
-        aria-labelledby="modal-edu-title"
-      >
+      <Modal open={modalOpen} onClose={closeModal} labelledById="modal-edu-title">
         <div className="modal-box">
           <div className="modal-header">
             <div>
@@ -217,11 +183,7 @@ export default function Education() {
                 {t('Todos os Cursos', 'All Courses')}
               </h3>
             </div>
-            <button
-              className="modal-close"
-              onClick={closeModal}
-              aria-label={t('Fechar modal', 'Close modal')}
-            >
+            <button className="modal-close" onClick={closeModal} aria-label={t('Fechar modal', 'Close modal')}>
               ✕
             </button>
           </div>
@@ -232,10 +194,7 @@ export default function Education() {
                 <div key={course.id} className={`mc-item${course.inProgress ? ' mc-progress' : ''}`}>
                   <div className={`mc-dot${course.inProgress ? ' mc-dot-pulse' : ''}`} />
                   <div className="mc-content">
-                    <div
-                      className="mc-name"
-                      style={course.inProgress ? { color: 'var(--text3)' } : undefined}
-                    >
+                    <div className="mc-name" style={course.inProgress ? { color: 'var(--text3)' } : undefined}>
                       {t(course.namePt, course.nameEn)}
                     </div>
                     <div className="mc-meta">
@@ -256,12 +215,10 @@ export default function Education() {
           </div>
 
           <div className="modal-footer">
-            <button className="btn-ghost" onClick={closeModal}>
-              {t('Fechar', 'Close')}
-            </button>
+            <button className="btn-ghost" onClick={closeModal}>{t('Fechar', 'Close')}</button>
           </div>
         </div>
-      </div>
+      </Modal>
     </>
   )
 }
