@@ -125,7 +125,7 @@ export default function Navbar() {
               <Link
                 to={link.to}
                 smooth={true}
-                duration={600}
+                duration={200}
                 offset={-66}
                 className="
                   relative text-[.7rem] text-[var(--muted)]
@@ -147,36 +147,40 @@ export default function Navbar() {
           <div className="hidden min-[950px]:flex items-center gap-2">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <LangToggle lang={lang} setLang={setLang} />
-            <a
-              href="/cv.pdf"
-              download
+            <Link
+              to="contato"
+              smooth={true}
+              duration={300}
+              offset={-66}
               className="
                 flex items-center gap-[6px]
                 bg-transparent border-[0.5px] border-[var(--border2)]
                 text-[var(--sand)] font-sans text-[.7rem] tracking-[.08em]
                 py-[.5rem] px-[1rem] rounded-[2rem]
-                transition-all duration-300
+                transition-all duration-300 cursor-pointer
                 hover:bg-[var(--tag-bg)] hover:border-[var(--sand)]
               "
             >
-              <span>⬇</span>
-              <span>{t('Currículo', 'Resume')}</span>
-            </a>
-            <Link
-              to="contato"
-              smooth={true}
-              duration={600}
-              offset={-66}
+              {t('Contato ↓', 'Contact ↓')}
+            </Link>
+            <a
+              href="https://linkedin.com/in/veronica-vilas"
+              target="_blank"
+              rel="noopener noreferrer"
               className="
+                flex items-center gap-[6px]
                 font-sans text-[.7rem] tracking-[.08em] uppercase
                 text-[var(--bg)] bg-[var(--sand)]
                 px-[1.3rem] py-[.58rem] rounded-[2rem]
-                transition-all duration-300 cursor-pointer
+                transition-all duration-300
                 hover:bg-[var(--cream)] hover:scale-[1.03]
               "
             >
-              {t('Contato →', 'Contact →')}
-            </Link>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+              </svg>
+              LinkedIn
+            </a>
           </div>
 
           <button
@@ -200,7 +204,7 @@ export default function Navbar() {
                 <Link
                   to={link.to}
                   smooth={true}
-                  duration={600}
+                  duration={300}
                   offset={-66}
                   onClick={handleMobileLink}
                   className="
@@ -219,20 +223,23 @@ export default function Navbar() {
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <LangToggle lang={lang} setLang={setLang} />
             <a
-              href="/cv.pdf"
-              download
+              href="https://linkedin.com/in/veronica-vilas"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={handleMobileLink}
               className="
                 flex items-center gap-[6px]
-                bg-transparent border-[0.5px] border-[var(--border2)]
-                text-[var(--sand)] font-sans text-[.7rem] tracking-[.08em]
-                py-[.5rem] px-[1rem] rounded-[2rem]
+                font-sans text-[.7rem] tracking-[.08em] uppercase
+                text-[var(--bg)] bg-[var(--sand)]
+                px-[1.3rem] py-[.58rem] rounded-[2rem]
                 transition-all duration-300
-                hover:bg-[var(--tag-bg)] hover:border-[var(--sand)]
+                hover:bg-[var(--cream)]
               "
             >
-              <span>⬇</span>
-              <span>CV</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+              </svg>
+              LinkedIn
             </a>
           </div>
         </div>

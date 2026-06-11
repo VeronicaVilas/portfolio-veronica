@@ -63,21 +63,24 @@ export default function Hero() {
                     </div>
 
                     <div className="hero-btns">
-                        <button
-                            className="btn-ghost"
-                            onClick={() => window.open('https://linkedin.com/in/veronica-vilas', '_blank')}
-                        >
-                            LinkedIn →
-                        </button>
+                        <a className="btn-ghost" href="/Curriculo_Veronica_Vilas.pdf" download>
+                            ↓ {t('Baixar CV', 'Download Resume')}
+                        </a>
                         <button
                             className="btn-ghost"
                             onClick={() => window.open('https://github.com/VeronicaVilas', '_blank')}
                         >
                             GitHub →
                         </button>
-                        <a className="btn-cv-hero" href="/Curriculo_Veronica_Vilas.pdf" download>
-                            ↓ {t('Baixar CV', 'Download Resume')}
-                        </a>
+                        <button
+                            className="btn-primary"
+                            onClick={() => window.open('https://linkedin.com/in/veronica-vilas', '_blank')}
+                        >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+                            </svg>
+                            {t('Vamos conversar?', "Let's talk?")}
+                        </button>
                     </div>
                 </div>
             </div>
