@@ -13,7 +13,8 @@ export const SKILL_BARS: SkillBar[] = [
     { name: 'PHP · Laravel · Vue.js · HTML · CSS · JS', pct: 95, since: 2023 },
     { name: 'PostgreSQL · MySQL',  pct: 95, since: 2024 },
     { name: 'CodeIgniter · TypeScript · Angular · Figma', pct: 80, since: 2024 },
-    { name: 'Node.js · Docker · AWS', pct: 60, since: 2025 },
+    { name: 'Node.js · WordPress · Docker · AWS', pct: 60, since: 2025 },
+    { name: 'React · Next.js', pct: 20, since: 2026 },
 ]
 
 export const SKILL_PILLS: SkillPill[] = [
