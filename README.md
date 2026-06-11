@@ -8,7 +8,7 @@
 
 > portfólio pessoal feito com carinho (e muito café) ☕
 
-[![Ver portfólio](https://img.shields.io/badge/🚀_Ver_portfólio-ao_vivo-D4A853?style=for-the-badge&labelColor=0E0A05)]([https://veronica-vilas.dev](https://vercel.com/veronica-vilas-projects/portfolio-veronica))
+[![Ver portfólio](https://img.shields.io/badge/🚀_Ver_portfólio-ao_vivo-D4A853?style=for-the-badge&labelColor=0E0A05)](https://portfolio-veronica-sage.vercel.app/)
 
 </div>
 
